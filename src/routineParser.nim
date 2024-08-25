@@ -1,18 +1,21 @@
-import std/[times, streams, strutils]
+import std/[times, streams, strutils, strformat, math]
 import pkg/yaml
 
 type
   Routine = object
     version: string
-    context: RoutineConfig
+    config: RoutineConfig
     blocks: seq[RoutineBlock]
 
   RoutineConfig = object
-    day: RoutineDayConfig
+    dayStart: string
+    dayEnd: string
+    tolerance: RoutineConfigTolerance
 
-  RoutineDayConfig = object
-    wakeUp: string
-    sleep: string
+  RoutineConfigTolerance = object
+    betweenBlocks: string
+    betweenTasks: string
+    betweenActions: string
 
   RoutineBlock = object
     name: string
@@ -30,28 +33,66 @@ type
 proc loadConfig(yamlFile: string): Routine =
   result = loadAs[Routine](yamlFile.readFile)
 
-func toInterval(spec: string): TimeInterval =
+func toInterval(spec: string): Duration =
   ## Currently only supports minutes
   if "min" notin spec:
-    throw newException(ValueError, "Duration should be intervals.")
-  result = initTimeInterval(minutes = spec.strip(AllChars - Letters).parseInt)
- 
+    raise newException(ValueError, fmt"Duration should be minutes at {spec}")
+  result = initDuration(minutes =
+    spec.strip(chars = AllChars - Digits).parseInt)
 
-func duration(dayConfig: RoutineDayConfig): TimeInterval =
+func clockToHours(hourRepr: string): float =
+  ## Transforms a clock representation (10:30) to a hours number (10.5)
+  if "am" in hourRepr or "pm" in hourRepr:
+    raise newException(ValueError, fmt"Clock representation doesn't supports AM/PM at {hourRepr}")
   let
-    start = dayConfig.start.toInterval
+    parts = hourRepr.split ":"
+    hours = float parseInt strip parts[0]
+    minutes = parseInt strip parts[1]
+  result = hours + (minutes / 60)
 
+func dayDuration(routineConfig: RoutineConfig): Duration =
+  let
+    dayStart = clockToHours routineConfig.dayStart
+    dayEnd = clockToHours routineConfig.dayEnd
+    duration = dayEnd - dayStart
+    hoursDuration = int duration
+    minutesDuration = 60 * (duration mod 1.0).int
+  result = initDuration(hours = hoursDuration, minutes = minutesDuration)
 
-proc checkCli(routineYaml: string): bool =
+func toHours(dur: Duration): float =
+  ## Converts into a floating hours
+  result = dur.inMinutes / 60
+
+proc summaryCommand(routineYaml: string): tuple[
+  valid: bool,
+  neededHours: float,
+  dayHours: float
+] =
   ## Checks if routine is not larger than day
-  const routineFile = "routine.yaml"
   let
-    routine = loadConfig routineFile
-    routine.config.day.duration
+    routine = loadConfig routineYaml
+    dayDuration = routine.config.dayDuration
+    toleranceBetweenBlocks = routine.config.tolerance.betweenBlocks.toInterval
+    toleranceBetweenTasks = routine.config.tolerance.betweenTasks.toInterval
+    toleranceBetweenActions = routine.config.tolerance.betweenActions.toInterval
+  var neededTime = initDuration(hours = 0)
+
+  for blk in routine.blocks:
+    neededTime += toleranceBetweenBlocks
+    for task in blk.tasks:
+      neededTime += toleranceBetweenTasks
+      for action in task.actions:
+        neededTime += toleranceBetweenActions
+        neededTime += action.duration.toInterval
+
+  result.dayHours = dayDuration.toHours
+  result.neededHours = neededTime.toHours
+  result.valid = result.neededHours <= result.dayHours
 
 when isMainModule:
   import pkg/cligen
   dispatchMulti([
-    checkCli,
-    cmdName: "check"
+    summaryCommand,
+    cmdName = "summary",
+    echoResult = true
   ])
