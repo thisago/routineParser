@@ -14,7 +14,7 @@ let task = initTtmRepeatingTask(
 
 suite "task creation":
   test "task text features":
-    check task.textFeatures == "Test task [routine] #d600 #a1234"
+    check task.textFeatures == "Test task [routine] #t600 #a1234"
 
   test "task id":
     check task.id.`$`.len == 10

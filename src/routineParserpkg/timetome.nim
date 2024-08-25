@@ -25,7 +25,7 @@ func textFeatures*(task): string =
   var results = @[
     task.name,
     ownIdentifier,
-    fmt"#d{task.duration.inSeconds}",
+    fmt"#t{task.duration.inSeconds}",
     fmt"#a{task.activityId}"
   ]
   if task.isImportant:
