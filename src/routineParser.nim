@@ -33,7 +33,7 @@ type
 proc loadConfig(yamlFile: string): Routine =
   result = loadAs[Routine](yamlFile.readFile)
 
-func toInterval(spec: string): Duration =
+func toDuration(spec: string): Duration =
   ## Currently only supports minutes
   if "min" notin spec:
     raise newException(ValueError, fmt"Duration should be minutes at {spec}")
@@ -50,14 +50,18 @@ func clockToHours(hourRepr: string): float =
     minutes = parseInt strip parts[1]
   result = hours + (minutes / 60)
 
+func splitHours(hours: float): tuple[hours, minutes: int] =
+  ## Extracts minutes from the rest
+  result.hours = int hours
+  result.minutes = int round 60 * (hours mod 1.0)
+
 func dayDuration(routineConfig: RoutineConfig): Duration =
   let
     dayStart = clockToHours routineConfig.dayStart
     dayEnd = clockToHours routineConfig.dayEnd
     duration = dayEnd - dayStart
-    hoursDuration = int duration
-    minutesDuration = 60 * (duration mod 1.0).int
-  result = initDuration(hours = hoursDuration, minutes = minutesDuration)
+    t = splitHours duration
+  result = initDuration(hours = t.hours, minutes = t.minutes)
 
 func toHours(dur: Duration): float =
   ## Converts into a floating hours
@@ -72,9 +76,9 @@ proc summaryCommand(routineYaml: string): tuple[
   let
     routine = loadConfig routineYaml
     dayDuration = routine.config.dayDuration
-    toleranceBetweenBlocks = routine.config.tolerance.betweenBlocks.toInterval
-    toleranceBetweenTasks = routine.config.tolerance.betweenTasks.toInterval
-    toleranceBetweenActions = routine.config.tolerance.betweenActions.toInterval
+    toleranceBetweenBlocks = routine.config.tolerance.betweenBlocks.toDuration
+    toleranceBetweenTasks = routine.config.tolerance.betweenTasks.toDuration
+    toleranceBetweenActions = routine.config.tolerance.betweenActions.toDuration
   var neededTime = initDuration(hours = 0)
 
   for blk in routine.blocks:
@@ -83,16 +87,58 @@ proc summaryCommand(routineYaml: string): tuple[
       neededTime += toleranceBetweenTasks
       for action in task.actions:
         neededTime += toleranceBetweenActions
-        neededTime += action.duration.toInterval
+        neededTime += action.duration.toDuration
 
   result.dayHours = dayDuration.toHours
   result.neededHours = neededTime.toHours
   result.valid = result.neededHours <= result.dayHours
+
+proc hr(dur: Duration): string =
+  ## Converts duration into readable hours representation (10:30)
+  let t = splitHours dur.inMinutes / 60
+  result = fmt"{t.hours:>02}:{t.minutes:>02}"
+
+func toDuration(hours: float): Duration =
+  ## Converts a floating hour into Duration
+  let t = hours.splitHours
+  initDuration(hours = t.hours, minutes = t.minutes)
+
+
+proc representCommand(routineYaml: string; dayStart = -1.0): string =
+  ## Generates the routine representation in Markdown
+  ##
+  ## The float hours described at `dayStart` overrides the configuration day start
+  let routine = loadConfig routineYaml
+  var realDayStart = if dayStart >= 0: dayStart
+                     else: clockToHours routine.config.dayStart
+  var time = realDayStart.toDuration
+
+
+  for blk in routine.blocks:
+    let blockStart = time
+    var tasksResult = ""
+    for task in blk.tasks:
+      let taskStart = time
+      var actionsResult = ""
+      for action in task.actions:
+        let actionStart = time
+        time += action.duration.toDuration
+        actionsResult.add fmt"- {action.name} ({hr actionStart}-{hr time})" & " \l"
+      tasksResult.add fmt"### {task.name} ({hr taskStart}-{hr time})" & "\l"
+      tasksResult.add actionsResult
+    result.add "\l" & fmt"## {blk.name} ({hr blockStart}-{hr time})" & "\l"
+    result.add tasksResult
+
+  result = strip result
 
 when isMainModule:
   import pkg/cligen
   dispatchMulti([
     summaryCommand,
     cmdName = "summary",
+    echoResult = true
+  ], [
+    representCommand,
+    cmdName = "represent",
     echoResult = true
   ])
