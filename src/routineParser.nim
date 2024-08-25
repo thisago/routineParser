@@ -112,7 +112,10 @@ proc representCommand(routineYaml: string; dayStart = -1.0): string =
   var realDayStart = if dayStart >= 0: dayStart
                      else: clockToHours routine.config.dayStart
   var time = realDayStart.toDuration
-
+  let
+    toleranceBetweenBlocks = routine.config.tolerance.betweenBlocks.toDuration
+    toleranceBetweenTasks = routine.config.tolerance.betweenTasks.toDuration
+    toleranceBetweenActions = routine.config.tolerance.betweenActions.toDuration
 
   for blk in routine.blocks:
     let blockStart = time
@@ -124,10 +127,13 @@ proc representCommand(routineYaml: string; dayStart = -1.0): string =
         let actionStart = time
         time += action.duration.toDuration
         actionsResult.add fmt"- {action.name} ({hr actionStart}-{hr time})" & " \l"
+        time += toleranceBetweenActions
       tasksResult.add fmt"### {task.name} ({hr taskStart}-{hr time})" & "\l"
       tasksResult.add actionsResult
+      time += toleranceBetweenTasks
     result.add "\l" & fmt"## {blk.name} ({hr blockStart}-{hr time})" & "\l"
     result.add tasksResult
+    time += toleranceBetweenBlocks
 
   result = strip result
 
