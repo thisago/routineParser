@@ -1,4 +1,4 @@
-import routineParserpkg/commands/[summary, represent]
+import routineParserpkg/commands/[summary, represent, patchTimetomeRepeatingTasks]
 
 when isMainModule:
   import pkg/cligen
@@ -10,4 +10,7 @@ when isMainModule:
     representCommand,
     cmdName = "represent",
     echoResult = true
+  ], [
+    patchTimetomeRepeatingTasksCommand,
+    cmdName = "patchTimetomeRepeatingTasks",
   ])

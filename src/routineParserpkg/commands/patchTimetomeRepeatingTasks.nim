@@ -1,0 +1,35 @@
+from std/times import initDuration, `+=`
+import std/json
+
+import routineParserpkg/[config, utils, timetome]
+
+proc patchTimetomeRepeatingTasksCommand*(
+  routineYaml: string;
+  timetomeJson: string;
+  dayStart = -1.0
+) =
+  ## Patches the timeto.me export file with the routine tasks
+  let routine = loadConfig routineYaml
+  var timetome = parseJson readFile timetomeJson
+  let activities = timetome.activities
+
+  var repeatingTasks: seq[TtmRepeatingTask]
+
+  var realDayStart = if dayStart >= 0: dayStart
+                     else: clockToHours routine.config.dayStart
+  var time = realDayStart.toDuration
+
+  for blk in routine.blocks:
+    for task in blk.tasks:
+      let taskDuration = task.duration routine.config.tolerance
+      repeatingTasks.add initTtmRepeatingTask(
+        name = task.name,
+        duration = taskDuration,
+        activityId = activities[task.timetome],
+        scheduled = time
+      )
+      time += taskDuration
+
+  timetome.repeatings = repeatingTasks
+
+  timetomeJson.writeFile $timetome

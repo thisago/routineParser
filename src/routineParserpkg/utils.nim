@@ -46,3 +46,23 @@ func toDuration*(hours: float): Duration =
   ## Converts a floating hour into Duration
   let t = hours.splitHours
   initDuration(hours = t.hours, minutes = t.minutes)
+
+
+func duration*(task: RoutineBlockTask; tolerances: RoutineConfigTolerance): Duration =
+  let toleranceBetweenActions = tolerances.betweenActions.toDuration
+  for action in task.actions:
+    result += action.duration.toDuration
+    result += toleranceBetweenActions
+
+func duration*(blk: RoutineBlock; tolerances: RoutineConfigTolerance): Duration =
+  let toleranceBetweenTasks = tolerances.betweenTasks.toDuration
+  for task in blk.tasks:
+    result += task.duration tolerances
+    result += toleranceBetweenTasks
+
+func duration*(blocks: seq[RoutineBlock];
+    tolerances: RoutineConfigTolerance): Duration =
+  let toleranceBetweenBlocks = tolerances.betweenBlocks.toDuration
+  for blk in blocks:
+    result += blk.duration tolerances
+    result += toleranceBetweenBlocks

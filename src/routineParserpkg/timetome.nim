@@ -1,19 +1,20 @@
-from std/strutils import join
+from std/strutils import join, contains, split
 from std/times import Duration, inSeconds, now, toUnix, toTime
 from std/strformat import fmt
-from std/json import JsonNode, `%*`, `%`
+from std/json import JsonNode, `%*`, `%`, `[]`, items, getInt, getStr, `[]=`
+from std/tables import Table, `[]=`
+
+export tables.`[]`
+
+const ownIdentifier = "[routine]"
 
 type
   TtmRepeatingTask* = object
-    name: string
-    isImportant: bool
-    duration: Duration
-    scheduled: Duration
-
-    lastDay: int
-    typeId: int
-    value: string
-
+    name*: string
+    isImportant*: bool
+    duration*: Duration
+    scheduled*: Duration
+    activityId*: string
 
 using
   task: TtmRepeatingTask
@@ -21,11 +22,15 @@ using
 func textFeatures*(task): string =
   ## Source:
   ##   timeto.me/src/commit/4cbbe980cff2b36596ea69f4e7bb503e6277f310/shared/src/commonMain/kotlin/me/timeto/shared/TextFeatures.kt
-  var results = @[task.name]
+  var results = @[
+    task.name,
+    ownIdentifier,
+    fmt"#d{task.duration.inSeconds}",
+    fmt"#a{task.activityId}"
+  ]
   if task.isImportant:
     results.add "#important"
-  if task.duration.inSeconds > 0:
-    results.add fmt"#d{task.duration.inSeconds}"
+
   result = results.join " "
 
 proc id*(task): int64 =
@@ -34,12 +39,14 @@ proc id*(task): int64 =
 
 func initTtmRepeatingTask*(
   name: string;
-  duration, scheduled: Duration
+  duration, scheduled: Duration;
+  activityId: string
 ): TtmRepeatingTask =
   TtmRepeatingTask(
     name: name,
     duration: duration,
-    scheduled: scheduled
+    scheduled: scheduled,
+    activityId: activityId
   )
 
 proc toJson*(task): JsonNode =
@@ -53,3 +60,28 @@ proc toJson*(task): JsonNode =
     %task.scheduled.inSeconds, # daytime
     %(if task.isImportant: 1 else: 0) # is_important
   ]
+
+proc activities*(ttmExportNode: JsonNode): Table[string, string] =
+  ## Extracts activities from timeto.me export
+  for activity in ttmExportNode["activities"]:
+    let id = $activity[0].getInt
+    var name = activity[1].getStr
+    if '#' in name:
+      let parts = name.split " #"
+      name = parts[0]
+    result[name] = id
+
+proc `repeatings=`*(
+  ttmExportNode: var JsonNode;
+  repeatingTasks: seq[TtmRepeatingTask]
+) =
+  var allRepeatingTasks: seq[JsonNode]
+  for existingTask in ttmExportNode["repeatings"]:
+    let name = existingTask[1].getStr
+    if ownIdentifier notin name:
+      allRepeatingTasks.add existingTask
+
+  for task in repeatingTasks:
+    allRepeatingTasks.add task.toJson
+
+  ttmExportNode["repeatings"] = %allRepeatingTasks
