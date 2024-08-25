@@ -3,6 +3,7 @@ from std/times import Duration, inSeconds, now, toUnix, toTime
 from std/strformat import fmt
 from std/json import JsonNode, `%*`, `%`, `[]`, items, getInt, getStr, `[]=`
 from std/tables import Table, `[]=`
+from std/random import randomize, rand
 
 export tables.`[]`
 
@@ -25,8 +26,8 @@ func textFeatures*(task): string =
   var results = @[
     task.name,
     ownIdentifier,
+    fmt"#a{task.activityId}",
     fmt"#t{task.duration.inSeconds}",
-    fmt"#a{task.activityId}"
   ]
   if task.isImportant:
     results.add "#important"
@@ -35,7 +36,8 @@ func textFeatures*(task): string =
 
 proc id*(task): int64 =
   ## timeto.me task ids is it's epoch
-  result = now().toTime.toUnix
+  randomize()
+  result = now().toTime.toUnix + rand(0..9999)
 
 func initTtmRepeatingTask*(
   name: string;
@@ -54,7 +56,7 @@ proc toJson*(task): JsonNode =
   result = %*[
     %task.id, # id
     %task.textFeatures, # text
-    %0, # last_day
+    %19960, # last_day
     %1, # type_id
     %"1", # value - repetition (every day)
     %task.scheduled.inSeconds, # daytime
