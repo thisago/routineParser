@@ -1,5 +1,7 @@
 import std/[times, strutils, strformat, math]
 
+import routineParserpkg/config
+
 func toDuration*(spec: string): Duration =
   ## Currently only supports minutes
   if "min" notin spec:
