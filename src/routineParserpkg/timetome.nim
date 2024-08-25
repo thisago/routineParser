@@ -12,7 +12,7 @@ const ownIdentifier = "[routine]"
 type
   TtmRepeatingTask* = object
     name*: string
-    isImportant*: bool
+    important*: bool
     duration*: Duration
     scheduled*: Duration
     activityId*: string
@@ -29,7 +29,7 @@ func textFeatures*(task): string =
     fmt"#a{task.activityId}",
     fmt"#t{task.duration.inSeconds}",
   ]
-  if task.isImportant:
+  if task.important:
     results.add "#important"
 
   result = results.join " "
@@ -42,13 +42,15 @@ proc id*(task): int64 =
 func initTtmRepeatingTask*(
   name: string;
   duration, scheduled: Duration;
-  activityId: string
+  activityId: string;
+  important = false
 ): TtmRepeatingTask =
   TtmRepeatingTask(
     name: name,
     duration: duration,
     scheduled: scheduled,
-    activityId: activityId
+    activityId: activityId,
+    important: important
   )
 
 proc toJson*(task): JsonNode =
@@ -60,7 +62,7 @@ proc toJson*(task): JsonNode =
     %1, # type_id
     %"1", # value - repetition (every day)
     %task.scheduled.inSeconds, # daytime
-    %(if task.isImportant: 1 else: 0) # is_important
+    %(if task.important: 1 else: 0) # is_important
   ]
 
 proc activities*(ttmExportNode: JsonNode): Table[string, string] =

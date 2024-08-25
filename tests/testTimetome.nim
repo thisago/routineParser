@@ -9,12 +9,13 @@ let task = initTtmRepeatingTask(
   name = "Test task",
   duration = initDuration(minutes = 10),
   scheduled = initDuration(hours = 5),
-  activityId = "1234"
+  activityId = "1234",
+  important = true
 )
 
 suite "task creation":
   test "task text features":
-    check task.textFeatures == "Test task [routine] #t600 #a1234"
+    check task.textFeatures == "Test task [routine] #a1234 #t600 #important"
 
   test "task id":
     check task.id.`$`.len == 10
@@ -23,11 +24,11 @@ suite "task creation":
     let node = task.toJson
     check node[0].getInt.`$`.len == 10
     check node[1].getStr == task.textFeatures
-    check node[2].getInt == 0
+    check node[2].getInt > 0
     check node[3].getInt == 1
     check node[4].getStr == "1"
     check node[5].getInt == initDuration(hours = 5).inSeconds
-    check node[6].getInt == 0
+    check node[6].getInt == 1
 
 suite "export file":
   let exportFile = %*{

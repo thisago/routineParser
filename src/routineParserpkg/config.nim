@@ -23,6 +23,7 @@ type
   RoutineBlockTask* = object
     name*: string
     timetome*: string
+    important*: bool
     actions*: seq[RoutineBlockTaskAction]
 
   RoutineBlockTaskAction* = object
