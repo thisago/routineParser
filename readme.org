@@ -1,0 +1,24 @@
+#+title: Routine Parser
+
+* Example
+#+begin_src bash :exports result :results pp
+routineParser represent -r example.yaml
+#+end_src
+
+#+RESULTS:
+#+begin_example
+## Wake up (08:00-08:22)
+### Exit bedroom (08:00-08:17)
+- Vest clothes (08:00-08:05)
+- Make the bed (08:07-08:12)
+- Drink water (08:14-08:15)
+
+## Waking the body (08:30-12:49)
+### Breakfast (08:30-12:44)
+- Prepare the breakfast (08:30-11:00)
+- Eat the breakfast (11:02-12:42)
+
+## Morning work (12:57-21:04)
+### Work (12:57-20:59)
+- Work (12:57-20:57)
+#+end_example

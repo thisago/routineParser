@@ -1,0 +1,43 @@
+version: 0.0.1
+
+config:
+  dayStart: 08:00
+  dayEnd: 21:00
+  tolerance:
+    betweenBlocks: 8min
+    betweenTasks: 5min
+    betweenActions: 2min
+
+blocks:
+  - name: "Wake up"
+    tasks:
+      - name: "Exit bedroom"
+        timetome: "Getting ready"
+        important: true
+        actions:
+          - name: "Vest clothes"
+            duration: 5min
+          - name: "Make the bed"
+            duration: 5min
+          - name: "Drink water"
+            duration: 1min
+
+  - name: "Waking the body"
+    tasks:
+      - name: "Breakfast"
+        timetome: "Getting ready"
+        important: true
+        actions:
+          - name: "Prepare the breakfast"
+            duration: 150min
+          - name: "Eat the breakfast"
+            duration: 100min
+
+  - name: "Morning work"
+    tasks:
+      - name: "Work"
+        timetome: "Work"
+        important: true
+        actions:
+          - name: "Work"
+            duration: 480min
