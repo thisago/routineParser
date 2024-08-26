@@ -29,6 +29,8 @@ proc patchTimetomeRepeatingTasksCommand*(
         scheduled = time
       )
       time += taskDuration
+      time += routine.config.tolerance.betweenTasks.toDuration
+    time += routine.config.tolerance.betweenBlocks.toDuration
 
   timetome.repeatings = repeatingTasks
 
