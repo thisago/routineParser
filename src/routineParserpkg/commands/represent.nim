@@ -27,7 +27,7 @@ proc representCommand*(routineYaml: string; dayStart = -1.0): string =
       for action in task.actions:
         let actionStart = time
         time += action.duration.toDuration
-        actionsResult.add fmt"- {action.name} ({hr actionStart}-{hr time})" & " \l"
+        actionsResult.add fmt"- {action.name} - {action.duration} ({hr actionStart}-{hr time})" & " \l"
         time += toleranceBetweenActions
       tasksResult.add fmt"### {task.name} ({hr taskStart}-{hr time})" & "\l"
       tasksResult.add actionsResult
