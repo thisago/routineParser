@@ -21,7 +21,9 @@ proc patchTimetomeRepeatingTasksCommand*(
 
   for blk in routine.blocks:
     for task in blk.tasks:
-      let taskDuration = task.duration routine.config.tolerance
+      var taskDuration = initDuration(hours = 0)
+      for action in task.actions:
+        taskDuration += action.duration.toDuration
       repeatingTasks.add initTtmRepeatingTask(
         name = task.name,
         duration = taskDuration,
