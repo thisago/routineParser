@@ -28,7 +28,8 @@ proc patchTimetomeRepeatingTasksCommand*(
         name = task.name,
         duration = taskDuration,
         activityId = activities[task.timetome],
-        scheduled = time
+        scheduled = time,
+        important = task.important
       )
       time += taskDuration
       time += routine.config.tolerance.betweenTasks.toDuration
