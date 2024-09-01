@@ -18,11 +18,18 @@ type
 
   RoutineBlock* = object
     name*: string
+    repeat*: set[RoutineBlockRepetition]
     tasks*: seq[RoutineBlockTask]
+
+  RoutineBlockRepetition* = enum
+    Everyday,
+    Weekdays, Weekends,
+    Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday,
+    Monthend, Monthstart
 
   RoutineBlockTask* = object
     name*: string
-    timetome*: string
+    timetome*: string # optional?
     important*: bool
     actions*: seq[RoutineBlockTaskAction]
 
@@ -32,4 +39,3 @@ type
 
 proc loadConfig*(yamlFile: string): Routine =
   result = loadAs[Routine](yamlFile.readFile)
-

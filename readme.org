@@ -4,6 +4,44 @@
 :END:
 #+title: Routine Parser
 
+* Help
+#+begin_src bash :exports result :results pp
+routineParser help
+#+end_src
+
+#+RESULTS:
+#+begin_example
+This is a multiple-dispatch command.  -h/--help/--help-syntax is available
+for top-level/all subcommands.  Usage is like:
+    routineParser {SUBCMD} [subcommand-opts & args]
+where subcommand syntaxes are as follows:
+
+  summary [REQUIRED,optional-params]
+    Checks if routine is not larger than day
+  Options:
+      -r=, --routineYaml=  string  REQUIRED  set routineYaml
+      -t=, --today=        string  ""        set today
+
+  represent [REQUIRED,optional-params]
+    Generates the routine representation in Markdown
+
+    The float hours described at `dayStart` overrides the configuration day
+    start
+  Options:
+      -r=, --routineYaml=  string  REQUIRED  set routineYaml
+      -d=, --dayStart=     float   -1.0      set dayStart
+      -t=, --today=        string  ""        set today
+
+  patchTimetomeRepeatingTasks [REQUIRED,optional-params]
+    Patches the timeto.me export file with the routine tasks
+  Options:
+      -r=, --routineYaml=   string  REQUIRED  set routineYaml
+      -t=, --timetomeJson=  string  REQUIRED  set timetomeJson
+      -d=, --dayStart=      float   -1.0      set dayStart
+      --today=              string  ""        set today
+#+end_example
+
+
 * Example
 #+begin_src bash :exports result :results pp
 routineParser represent -r example.yaml

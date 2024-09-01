@@ -60,9 +60,42 @@ func duration*(blk: RoutineBlock; tolerances: RoutineConfigTolerance): Duration 
     result += task.duration tolerances
     result += toleranceBetweenTasks
 
-func duration*(blocks: seq[RoutineBlock];
-    tolerances: RoutineConfigTolerance): Duration =
+func duration*(
+  blocks: seq[RoutineBlock];
+  tolerances: RoutineConfigTolerance
+): Duration =
   let toleranceBetweenBlocks = tolerances.betweenBlocks.toDuration
   for blk in blocks:
     result += blk.duration tolerances
     result += toleranceBetweenBlocks
+
+func weekday(dt: DateTime): WeekDay =
+  getDayOfWeek(dt.monthday, dt.month, dt.year)
+
+
+func isForToday*(repeat: RoutineBlockRepetition; dt: DateTime): bool =
+  let weekday = dt.weekday
+  case repeat:
+    of Everyday: true
+
+    of Sunday: weekday == dSun
+    of Monday: weekday == dMon
+    of Tuesday: weekday == dTue
+    of Wednesday: weekday == dWed
+    of Thursday: weekday == dThu
+    of Friday: weekday == dFri
+    of Saturday: weekday == dSat
+
+    of Weekdays: weekday in {dMon, dTue, dWed, dThu, dFri}
+    of Weekends: weekday in {dSat, dSun}
+
+    of Monthstart: dt.monthday == 1
+    of Monthend: dt.monthday == getDaysInMonth(dt.month, dt.year)
+
+    else: false
+
+func isForToday*(repeat: set[RoutineBlockRepetition]; dt: DateTime): bool =
+  result = false
+  for item in repeat:
+    if item.isForToday dt:
+      return true

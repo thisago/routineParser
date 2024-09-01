@@ -1,0 +1,4 @@
+#+title: Changelog
+
+* Version 0.2.0 (1 Sep 2024)
+- Repeating rules feature

@@ -10,10 +10,11 @@ config:
 
 blocks:
   - name: "Wake up"
+    repeat: [Everyday]
     tasks:
       - name: "Exit bedroom"
         timetome: "Getting ready"
-        important: true
+        important: false
         actions:
           - name: "Vest clothes"
             duration: 5min
@@ -23,21 +24,65 @@ blocks:
             duration: 1min
 
   - name: "Waking the body"
+    repeat: [Everyday]
     tasks:
       - name: "Breakfast"
         timetome: "Getting ready"
-        important: true
+        important: false
         actions:
           - name: "Prepare the breakfast"
-            duration: 150min
+            duration: 20min
           - name: "Eat the breakfast"
-            duration: 100min
+            duration: 10min
+
+      - name: "Morning exercises"
+        timetome: "Exercises"
+        important: false
+        actions:
+          - name: "Warm up"
+            duration: 10min
+          - name: "Calisthenics"
+            duration: 20min
+
+  - name: "Relax"
+    repeat: [Weekends]
+    tasks:
+      - name: "Go to park"
+        timetome: "Hobby/Fun"
+        important: false
+        actions:
+          - name: "Walk to the park"
+            duration: 20min
+          - name: "Stay there"
+            duration: 30min
+          - name: "Walk back home"
+            duration: 20min
 
   - name: "Morning work"
+    repeat: [Weekdays]
     tasks:
-      - name: "Work"
+      - name: "Work at morning"
         timetome: "Work"
-        important: true
+        important: false
         actions:
           - name: "Work"
-            duration: 480min
+            duration: 180min
+
+  - name: "Lunch"
+    repeat: [Everyday]
+    tasks:
+      - name: "Lunch"
+        timetome: "Getting Ready"
+        important: false
+        actions:
+          - name: "Prepare the lunch"
+            duration: 20min
+          - name: "Eat"
+            duration: 10min
+
+      - name: "Clean kitchen"
+        timetome: "Getting Ready"
+        important: false
+        actions:
+          - name: "Wash dishes"
+            duration: 10min
