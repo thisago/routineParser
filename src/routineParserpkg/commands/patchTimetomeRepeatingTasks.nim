@@ -27,6 +27,7 @@ proc patchTimetomeRepeatingTasksCommand*(
         var taskDuration = initDuration(hours = 0)
         for action in task.actions:
           taskDuration += action.duration.toDuration
+          time += routine.config.tolerance.betweenActions.toDuration
         repeatingTasks.add initTtmRepeatingTask(
           name = task.name,
           duration = taskDuration,
