@@ -1,5 +1,6 @@
 from std/times import initDuration, `+=`, parse, now
 import std/json
+from std/strformat import fmt
 
 import routineParserpkg/[config, utils, timetome]
 
@@ -31,7 +32,7 @@ proc patchTimetomeRepeatingTasksCommand*(
           taskDuration += action.duration.toDuration
           taskTolerance += routine.config.tolerance.betweenActions.toDuration
         repeatingTasks.add initTtmRepeatingTask(
-          name = task.name,
+          name = fmt"{task.name} - {task.storyPoints}sp",
           duration = taskDuration,
           activityId = activities[task.timetome],
           scheduled = time,

@@ -9,6 +9,7 @@ type
   RoutineConfig* = object
     dayStart*: string
     dayEnd*: string
+    idealStoryPoints*: int
     tolerance*: RoutineConfigTolerance
 
   RoutineConfigTolerance* = object
@@ -31,6 +32,7 @@ type
     name*: string
     timetome*: string # optional?
     important*: bool
+    storyPoints*: int
     actions*: seq[RoutineBlockTaskAction]
 
   RoutineBlockTaskAction* = object

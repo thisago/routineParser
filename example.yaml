@@ -3,6 +3,7 @@ version: 0.0.1
 config:
   dayStart: 08:00
   dayEnd: 21:00
+  idealStoryPoints: 30
   tolerance:
     betweenBlocks: 8min
     betweenTasks: 5min
@@ -15,6 +16,7 @@ blocks:
       - name: "Exit bedroom"
         timetome: "Getting ready"
         important: false
+        storyPoints: 2
         actions:
           - name: "Vest clothes"
             duration: 5min
@@ -29,6 +31,7 @@ blocks:
       - name: "Breakfast"
         timetome: "Getting ready"
         important: false
+        storyPoints: 2
         actions:
           - name: "Prepare the breakfast"
             duration: 20min
@@ -38,6 +41,7 @@ blocks:
       - name: "Morning exercises"
         timetome: "Exercises"
         important: false
+        storyPoints: 3
         actions:
           - name: "Warm up"
             duration: 10min
@@ -50,6 +54,7 @@ blocks:
       - name: "Go to park"
         timetome: "Hobby/Fun"
         important: false
+        storyPoints: 1
         actions:
           - name: "Walk to the park"
             duration: 20min
@@ -64,6 +69,7 @@ blocks:
       - name: "Work at morning"
         timetome: "Work"
         important: false
+        storyPoints: 8
         actions:
           - name: "Work"
             duration: 180min
@@ -74,6 +80,7 @@ blocks:
       - name: "Lunch"
         timetome: "Getting Ready"
         important: false
+        storyPoints: 2
         actions:
           - name: "Prepare the lunch"
             duration: 20min
@@ -83,6 +90,7 @@ blocks:
       - name: "Clean kitchen"
         timetome: "Getting Ready"
         important: false
+        storyPoints: 2
         actions:
           - name: "Wash dishes"
             duration: 10min

@@ -9,7 +9,8 @@ proc summaryCommand*(
   valid: bool;
   rawNeededHours: float;
   realNeededHours: float;
-  dayHours: float
+  dayHours: float,
+  totalStoryPoints: int,
 ] =
   ## Checks if routine is not larger than day
   let
@@ -30,4 +31,7 @@ proc summaryCommand*(
     betweenActions: "0min"
   )
   result.realNeededHours = toHours blocks.duration routine.config.tolerance
-  result.valid = result.realNeededHours <= result.dayHours
+  result.totalStoryPoints = blocks.totalStoryPoints
+
+  result.valid = result.realNeededHours <= result.dayHours and
+                 result.totalStoryPoints <= routine.config.idealStoryPoints

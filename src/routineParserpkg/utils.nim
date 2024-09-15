@@ -99,3 +99,9 @@ func isForToday*(repeat: set[RoutineBlockRepetition]; dt: DateTime): bool =
   for item in repeat:
     if item.isForToday dt:
       return true
+
+func totalStoryPoints*(blocks: seq[RoutineBlock]): int =
+  ## Sums all routine storypoints
+  for blk in blocks:
+    for task in blk.tasks:
+      result += task.storyPoints
