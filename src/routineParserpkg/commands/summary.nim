@@ -27,11 +27,7 @@ proc summaryCommand*(
       blocks.add blk
 
   result.dayHours = dayDuration.toHours
-  result.rawNeededHours = toHours blocks.duration RoutineConfigTolerance(
-    betweenBlocks: "0min",
-    betweenTasks: "0min",
-    betweenActions: "0min"
-  )
+  result.rawNeededHours = toHours blocks.duration RoutineConfigTolerance()
   result.realNeededHours = toHours blocks.duration routine.config.tolerance
   result.rawStoryPoints = blocks.totalStoryPoints
   result.rawEnergyBack = blocks.totalEnergyBack

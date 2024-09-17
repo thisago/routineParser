@@ -39,10 +39,21 @@ where subcommand syntaxes are as follows:
       -t=, --timetomeJson=  string  REQUIRED  set timetomeJson
       -d=, --dayStart=      float   -1.0      set dayStart
       --today=              string  ""        set today
+
+  ganttChart [REQUIRED,optional-params]
+    Generates the routine representation in Mermaid Gantt chart
+
+    The float hours described at `dayStart` overrides the configuration day
+    start
+  Options:
+      -r=, --routineYaml=  string  REQUIRED  set routineYaml
+      -d=, --dayStart=     float   -1.0      set dayStart
+      -t=, --today=        string  ""        set today
 #+end_example
 
 
 * Example
+** Markdown
 #+begin_src bash :exports result :results pp
 routineParser represent -r example.yaml
 #+end_src
@@ -50,17 +61,61 @@ routineParser represent -r example.yaml
 #+RESULTS:
 #+begin_example
 ## Wake up (08:00-08:22)
-### Exit bedroom (08:00-08:17)
-- Vest clothes (08:00-08:05)
-- Make the bed (08:07-08:12)
-- Drink water (08:14-08:15)
+### Exit bedroom - 2sp2eb (08:00-08:17)
+- Vest clothes - 5min (08:00-08:05)
+- Make the bed - 5min (08:07-08:12)
+- Drink water - 1min (08:14-08:15)
 
-## Waking the body (08:30-12:49)
-### Breakfast (08:30-12:44)
-- Prepare the breakfast (08:30-11:00)
-- Eat the breakfast (11:02-12:42)
+## Waking the body (08:30-09:48)
+### Breakfast - 2sp3eb (08:30-09:04)
+- Prepare the breakfast - 20min (08:30-08:50)
+- Eat the breakfast - 10min (08:52-09:02)
+### Morning exercises - 3sp4eb (09:09-09:43)
+- Warm up - 10min (09:09-09:19)
+- Calisthenics - 20min (09:21-09:41)
 
-## Morning work (12:57-21:04)
-### Work (12:57-20:59)
-- Work (12:57-20:57)
+## Morning work (09:56-13:03)
+### Work at morning - 8sp2eb (09:56-12:58)
+- Work - 180min (09:56-12:56)
+
+## Lunch (13:11-14:07)
+### Lunch - 2sp3eb (13:11-13:45)
+- Prepare the lunch - 20min (13:11-13:31)
+- Eat - 10min (13:33-13:43)
+### Clean kitchen - 2sp1eb (13:50-14:02)
+- Wash dishes - 10min (13:50-14:00)
 #+end_example
+** Gantt Chart
+#+begin_src bash :exports result :results raw
+echo "#+begin_src mermaid :file example.svg"
+echo "%%{init: { 'theme': 'dark' } }%%"
+routineParser ganttChart -r example.yaml
+echo "#+end_src"
+#+end_src
+
+#+RESULTS:
+#+begin_src mermaid :file example.svg
+%%{init: { 'theme': 'dark' } }%%
+gantt
+  title "Routine (0.0.1)"
+  dateFormat HH:mm
+  axisFormat %H:%M
+
+  Day Start : milestone, m1, 08:00, 2m
+
+  section Wake up
+  Exit bedroom 2sp2eb : 08:00, 11m
+
+  section Waking the body
+  Breakfast 2sp3eb : 08:30, 30m
+  Morning exercises 3sp4eb : 09:09, 30m
+
+  section Morning work
+  Work at morning 8sp2eb : 09:56, 180m
+
+  section Lunch
+  Lunch 2sp3eb : 13:11, 30m
+  Clean kitchen 2sp1eb : 13:50, 10m
+
+  Day End : milestone, m2, 21:00, 2m
+#+end_src

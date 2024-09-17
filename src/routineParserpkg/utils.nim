@@ -92,7 +92,6 @@ func isForToday*(repeat: RoutineBlockRepetition; dt: DateTime): bool =
     of Monthstart: dt.monthday == 1
     of Monthend: dt.monthday == getDaysInMonth(dt.month, dt.year)
 
-    else: false
 
 func isForToday*(repeat: set[RoutineBlockRepetition]; dt: DateTime): bool =
   result = false

@@ -1,4 +1,9 @@
-import routineParserpkg/commands/[summary, represent, patchTimetomeRepeatingTasks]
+import routineParserpkg/commands/[
+  summary,
+  represent,
+  patchTimetomeRepeatingTasks,
+  ganttChart
+]
 
 when isMainModule:
   import pkg/cligen
@@ -13,4 +18,7 @@ when isMainModule:
   ], [
     patchTimetomeRepeatingTasksCommand,
     cmdName = "patchTimetomeRepeatingTasks",
+  ], [
+    ganttChartCommand,
+    cmdName = "ganttChart",
   ])

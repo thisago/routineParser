@@ -13,9 +13,9 @@ type
     tolerance*: RoutineConfigTolerance
 
   RoutineConfigTolerance* = object
-    betweenBlocks*: string
-    betweenTasks*: string
-    betweenActions*: string
+    betweenBlocks*: string = "0min"
+    betweenTasks*: string = "0min"
+    betweenActions*: string = "0min"
 
   RoutineBlock* = object
     name*: string
