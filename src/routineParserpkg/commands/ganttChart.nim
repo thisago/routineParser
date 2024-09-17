@@ -1,5 +1,5 @@
 from std/strformat import fmt
-from std/strutils import strip
+from std/strutils import strip, replace
 from std/times import `+=`, parse, now, inMinutes
 
 import routineParserpkg/[config, utils]
@@ -40,7 +40,8 @@ proc ganttChartCommand*(
         let
           taskStart = time
           taskDurationMin = task.duration(RoutineConfigTolerance()).inMinutes
-        tasksResult.add fmt"  {task.name} - {task.storyPoints}sp{task.energyBack}eb{taskDurationMin}min : {hr time}, {taskDurationMin}m" & "\l"
+          readableTime = time.hr.replace(":", "-")
+        tasksResult.add fmt"  {readableTime} {task.name} - {task.storyPoints}sp{task.energyBack}eb{taskDurationMin}min : {hr time}, {taskDurationMin}m" & "\l"
 
         var actionsResult = ""
         for action in task.actions:
