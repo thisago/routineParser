@@ -17,6 +17,7 @@ blocks:
         timetome: "Getting ready"
         important: false
         storyPoints: 2
+        energyBack: 2
         actions:
           - name: "Vest clothes"
             duration: 5min
@@ -32,6 +33,7 @@ blocks:
         timetome: "Getting ready"
         important: false
         storyPoints: 2
+        energyBack: 3
         actions:
           - name: "Prepare the breakfast"
             duration: 20min
@@ -42,6 +44,7 @@ blocks:
         timetome: "Exercises"
         important: false
         storyPoints: 3
+        energyBack: 4
         actions:
           - name: "Warm up"
             duration: 10min
@@ -55,6 +58,7 @@ blocks:
         timetome: "Hobby/Fun"
         important: false
         storyPoints: 1
+        energyBack: 3
         actions:
           - name: "Walk to the park"
             duration: 20min
@@ -70,6 +74,7 @@ blocks:
         timetome: "Work"
         important: false
         storyPoints: 8
+        energyBack: 2
         actions:
           - name: "Work"
             duration: 180min
@@ -81,6 +86,7 @@ blocks:
         timetome: "Getting Ready"
         important: false
         storyPoints: 2
+        energyBack: 3
         actions:
           - name: "Prepare the lunch"
             duration: 20min
@@ -91,6 +97,7 @@ blocks:
         timetome: "Getting Ready"
         important: false
         storyPoints: 2
+        energyBack: 1
         actions:
           - name: "Wash dishes"
             duration: 10min

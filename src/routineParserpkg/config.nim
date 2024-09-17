@@ -33,6 +33,7 @@ type
     timetome*: string # optional?
     important*: bool
     storyPoints*: int
+    energyBack*: int # storypoints back
     actions*: seq[RoutineBlockTaskAction]
 
   RoutineBlockTaskAction* = object

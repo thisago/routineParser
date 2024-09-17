@@ -105,3 +105,9 @@ func totalStoryPoints*(blocks: seq[RoutineBlock]): int =
   for blk in blocks:
     for task in blk.tasks:
       result += task.storyPoints
+
+func totalEnergyBack*(blocks: seq[RoutineBlock]): int =
+  ## Sums all routine energyBack
+  for blk in blocks:
+    for task in blk.tasks:
+      result += task.energyBack

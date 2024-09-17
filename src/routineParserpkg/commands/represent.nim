@@ -36,7 +36,7 @@ proc representCommand*(
           time += action.duration.toDuration
           actionsResult.add fmt"- {action.name} - {action.duration} ({hr actionStart}-{hr time})" & " \l"
           time += toleranceBetweenActions
-        tasksResult.add fmt"### {task.name} - {task.storyPoints}sp ({hr taskStart}-{hr time})" & "\l"
+        tasksResult.add fmt"### {task.name} - {task.storyPoints}sp{task.energyBack}eb ({hr taskStart}-{hr time})" & "\l"
         tasksResult.add actionsResult
         time += toleranceBetweenTasks
       result.add "\l" & fmt"## {blk.name} ({hr blockStart}-{hr time})" & "\l"
