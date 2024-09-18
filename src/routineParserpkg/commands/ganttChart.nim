@@ -25,7 +25,7 @@ proc ganttChartCommand*(
   let today = if today.len > 0: today.parse("yyyy-MM-dd") else: now()
 
   result.add fmt"""gantt
-  title "Routine ({routine.version})"
+  title Routine ({routine.version})
   dateFormat HH:mm
   axisFormat %H:%M
 
