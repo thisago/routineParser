@@ -100,4 +100,4 @@ blocks:
         energyBack: 1
         actions:
           - name: "Wash dishes"
-            duration: 10min
+            duration: 100min

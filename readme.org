@@ -53,8 +53,16 @@ where subcommand syntaxes are as follows:
 
 
 * Example
+** Summary
+#+begin_src bash :exports both :results pp
+routineParser summary -r example.yaml
+#+end_src
+
+#+RESULTS:
+: (valid: false, rawNeededHours: 4.85, realNeededHours: 6.25, dayHours: 13.0, rawStoryPoints: 217, rawEnergyBack: 15, totalStoryPoints: 202)
+
 ** Markdown
-#+begin_src bash :exports result :results pp
+#+begin_src bash :exports both :results pp
 routineParser represent -r example.yaml
 #+end_src
 
@@ -86,7 +94,7 @@ routineParser represent -r example.yaml
 - Wash dishes - 10min (13:50-14:00)
 #+end_example
 ** Gantt Chart
-#+begin_src bash :exports result :results raw
+#+begin_src bash :exports both :results raw
 echo "#+begin_src mermaid :file example.svg"
 echo "%%{init: { 'theme': 'dark' } }%%"
 routineParser ganttChart -r example.yaml
@@ -104,18 +112,21 @@ gantt
   Day Start : milestone, m1, 08:00, 2m
 
   section Wake up
-  Exit bedroom 2sp2eb : 08:00, 11m
+  08-00 Exit bedroom - 2sp2eb11min : 08:00, 11m
 
   section Waking the body
-  Breakfast 2sp3eb : 08:30, 30m
-  Morning exercises 3sp4eb : 09:09, 30m
+  08-30 Breakfast - 2sp3eb30min : 08:30, 30m
+  09-09 Morning exercises - 3sp4eb30min : 09:09, 30m
 
   section Morning work
-  Work at morning 8sp2eb : 09:56, 180m
+  09-56 Work at morning - 8sp2eb180min : 09:56, 180m
 
   section Lunch
-  Lunch 2sp3eb : 13:11, 30m
-  Clean kitchen 2sp1eb : 13:50, 10m
+  13-11 Lunch - 2sp3eb30min : 13:11, 30m
+  13-50 Clean kitchen - 2sp1eb100min : 13:50, 100m
 
   Day End : milestone, m2, 21:00, 2m
 #+end_src
+
+#+RESULTS:
+[[file:example.svg]]
