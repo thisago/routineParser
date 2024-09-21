@@ -1,6 +1,6 @@
 from std/strformat import fmt
 from std/strutils import strip, replace
-from std/times import `+=`, parse, now, inMinutes
+from std/times import `+=`, parse, now, inMinutes, format
 
 import routineParserpkg/[config, utils]
 
@@ -25,7 +25,7 @@ proc ganttChartCommand*(
   let todayDt = if today.len > 0: today.parse("yyyy-MM-dd") else: now()
 
   result.add fmt"""gantt
-  title Routine for {today} ({routine.version})
+  title Routine for {todayDt.format "yyyy-MM-dd"} ({routine.version})
   dateFormat HH:mm
   axisFormat %H:%M
 
