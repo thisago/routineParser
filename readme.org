@@ -107,7 +107,7 @@ echo "#+end_src"
 #+begin_src mermaid :file example.svg
 %%{init: { 'theme': 'dark' } }%%
 gantt
-  title Routine for  (0.0.1)
+  title Routine for 2024-09-21 (0.0.1)
   dateFormat HH:mm
   axisFormat %H:%M
 
@@ -129,6 +129,3 @@ gantt
 
   Day End : milestone, m2, 21:00, 2m
 #+end_src
-
-#+RESULTS:
-[[file:example.svg]]
