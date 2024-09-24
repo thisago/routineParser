@@ -59,7 +59,7 @@ routineParser summary -r example.yaml
 #+end_src
 
 #+RESULTS:
-: (valid: true, rawNeededHours: 4.516666666666667, realNeededHours: 5.983333333333333, dayHours: 13.0, rawStoryPoints: 12, rawEnergyBack: 16, totalStoryPoints: -4)
+: (valid: true, rawNeededHours: 6.35, realNeededHours: 7.75, dayHours: 13.0, rawStoryPoints: 19, rawEnergyBack: 15, totalStoryPoints: 4)
 
 ** Markdown
 #+begin_src bash :exports both :results pp
@@ -75,25 +75,23 @@ routineParser represent -r example.yaml
 - Drink water - 1min (08:14-08:15)
 
 ## Waking the body (08:30-09:48)
-### Breakfast - 2sp3eb (08:30-09:04)
+### !Breakfast - 2sp3eb (08:30-09:04)
 - Prepare the breakfast - 20min (08:30-08:50)
 - Eat the breakfast - 10min (08:52-09:02)
 ### Morning exercises - 3sp4eb (09:09-09:43)
 - Warm up - 10min (09:09-09:19)
 - Calisthenics - 20min (09:21-09:41)
 
-## Relax (09:56-11:17)
-### Go to park - 1sp3eb (09:56-11:12)
-- Walk to the park - 20min (09:56-10:16)
-- Stay there - 30min (10:18-10:48)
-- Walk back home - 20min (10:50-11:10)
+## Morning work (09:56-13:03)
+### Work at morning - 8sp2eb (09:56-12:58)
+- Work - 180min (09:56-12:56)
 
-## Lunch (11:25-13:51)
-### Lunch - 2sp3eb (11:25-11:59)
-- Prepare the lunch - 20min (11:25-11:45)
-- Eat - 10min (11:47-11:57)
-### Clean kitchen - 2sp1eb (12:04-13:46)
-- Wash dishes - 100min (12:04-13:44)
+## Lunch (13:11-15:37)
+### Lunch - 2sp3eb (13:11-13:45)
+- Prepare the lunch - 20min (13:11-13:31)
+- Eat - 10min (13:33-13:43)
+### Clean kitchen - 2sp1eb (13:50-15:32)
+- Wash dishes - 100min (13:50-15:30)
 #+end_example
 ** Gantt Chart
 #+begin_src bash :exports both :results raw
@@ -107,7 +105,7 @@ echo "#+end_src"
 #+begin_src mermaid :file example.svg
 %%{init: { 'theme': 'dark' } }%%
 gantt
-  title Routine for 2024-09-21 (0.0.1)
+  title Routine for 2024-09-24 (0.0.1)
   dateFormat HH:mm
   axisFormat %H:%M
 
@@ -117,15 +115,15 @@ gantt
   08-00 Exit bedroom - 2sp2eb11min : 08:00, 11m
 
   section Waking the body
-  08-30 Breakfast - 2sp3eb30min : 08:30, 30m
+  08-30 !Breakfast - 2sp3eb30min : 08:30, 30m
   09-09 Morning exercises - 3sp4eb30min : 09:09, 30m
 
-  section Relax
-  09-56 Go to park - 1sp3eb70min : 09:56, 70m
+  section Morning work
+  09-56 Work at morning - 8sp2eb180min : 09:56, 180m
 
   section Lunch
-  11-25 Lunch - 2sp3eb30min : 11:25, 30m
-  12-04 Clean kitchen - 2sp1eb100min : 12:04, 100m
+  13-11 Lunch - 2sp3eb30min : 13:11, 30m
+  13-50 Clean kitchen - 2sp1eb100min : 13:50, 100m
 
   Day End : milestone, m2, 21:00, 2m
 #+end_src

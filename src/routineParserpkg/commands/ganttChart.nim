@@ -41,7 +41,10 @@ proc ganttChartCommand*(
           taskStart = time
           taskDurationMin = task.duration(RoutineConfigTolerance()).inMinutes
           readableTime = time.hr.replace(":", "-")
-        tasksResult.add fmt"  {readableTime} {task.name} - {task.storyPoints}sp{task.energyBack}eb{taskDurationMin}min : {hr time}, {taskDurationMin}m" & "\l"
+        tasksResult.add fmt"  {readableTime} "
+        if task.important:
+          tasksResult.add "!"
+        tasksResult.add fmt"{task.name} - {task.storyPoints}sp{task.energyBack}eb{taskDurationMin}min : {hr time}, {taskDurationMin}m" & "\l"
 
         var actionsResult = ""
         for action in task.actions:

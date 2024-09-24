@@ -31,7 +31,7 @@ blocks:
     tasks:
       - name: "Breakfast"
         timetome: "Getting ready"
-        important: false
+        important: true
         storyPoints: 2
         energyBack: 3
         actions:
