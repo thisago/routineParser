@@ -1,4 +1,11 @@
 #+title: Changelog
 
+* Version 0.3.0 (25 Sep 2024)
+- Option to highlight now action at Markdown representation =--highlightAction=
+- Added Mermaid Gantt Chart representation
+- Fixes at timeto.me patcher
+- Added story points and energy back calculations (prototype)
+- Added exclamation at important tasks on both representations
+
 * Version 0.2.0 (1 Sep 2024)
 - Repeating rules feature
