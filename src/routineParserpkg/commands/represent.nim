@@ -1,6 +1,6 @@
 from std/strformat import fmt
 from std/strutils import strip
-from std/times import `+=`, parse, now
+from std/times import `+=`, parse, now, `<`, initDuration, hour, minute, second
 
 import routineParserpkg/[config, utils]
 
@@ -8,7 +8,8 @@ import routineParserpkg/[config, utils]
 proc representCommand*(
   routineYaml: string;
   dayStart = -1.0;
-  today = ""
+  today = "",
+  highlightAction = false
 ): string =
   ## Generates the routine representation in Markdown
   ##
@@ -23,6 +24,13 @@ proc representCommand*(
     toleranceBetweenActions = routine.config.tolerance.betweenActions.toDuration
 
   let today = if today.len > 0: today.parse("yyyy-MM-dd") else: now()
+  let
+    nowDt = now()
+    nowDur = initDuration(
+      hours = nowDt.hour,
+      minutes = nowDt.minute,
+      seconds = nowDt.second,
+    )
 
   for blk in routine.blocks:
     if blk.repeat.isForToday today:
@@ -32,10 +40,17 @@ proc representCommand*(
         let taskStart = time
         var actionsResult = ""
         for action in task.actions:
+          var nextTime = time
           let actionStart = time
-          time += action.duration.toDuration
-          actionsResult.add fmt"- {action.name} - {action.duration} ({hr actionStart}-{hr time})" & " \l"
-          time += toleranceBetweenActions
+          nextTime += action.duration.toDuration
+          nextTime += toleranceBetweenActions
+          actionsResult.add "- "
+          if highlightAction and nowDur > time and nowDur < nextTime:
+            actionsResult.add fmt"**{action.name}**"
+          else:
+            actionsResult.add action.name
+          actionsResult.add fmt" - {action.duration} ({hr actionStart}-{hr time})" & " \l"
+          time = nextTime
         tasksResult.add "### "
         if task.important:
           tasksResult.add "!"

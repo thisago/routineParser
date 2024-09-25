@@ -31,6 +31,7 @@ where subcommand syntaxes are as follows:
       -r=, --routineYaml=  string  REQUIRED  set routineYaml
       -d=, --dayStart=     float   -1.0      set dayStart
       -t=, --today=        string  ""        set today
+      --highlightAction    bool    false     set highlightAction
 
   patchTimetomeRepeatingTasks [REQUIRED,optional-params]
     Patches the timeto.me export file with the routine tasks
