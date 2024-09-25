@@ -43,13 +43,13 @@ proc representCommand*(
           var nextTime = time
           let actionStart = time
           nextTime += action.duration.toDuration
-          nextTime += toleranceBetweenActions
           actionsResult.add "- "
           if highlightAction and nowDur > time and nowDur < nextTime:
             actionsResult.add fmt"**{action.name}**"
           else:
             actionsResult.add action.name
-          actionsResult.add fmt" - {action.duration} ({hr actionStart}-{hr time})" & " \l"
+          actionsResult.add fmt" - {action.duration} ({hr actionStart}-{hr nextTime})" & " \l"
+          nextTime += toleranceBetweenActions
           time = nextTime
         tasksResult.add "### "
         if task.important:
