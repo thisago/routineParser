@@ -34,7 +34,7 @@ proc patchTimetomeRepeatingTasksCommand*(
           taskTolerance += routine.config.tolerance.betweenActions.get.toDuration
         if task.timetome.isSome:
           repeatingTasks.add initTtmRepeatingTask(
-            name = fmt"{task.name} - {task.storyPoints}sp{task.energyBack}eb",
+            name = fmt"{task.name} - {task.storyPoints.get}sp{task.energyBack.get}eb",
             duration = taskDuration,
             activityId = activities[task.timetome.get],
             scheduled = time,

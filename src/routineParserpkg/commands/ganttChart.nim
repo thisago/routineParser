@@ -44,7 +44,7 @@ proc ganttChartCommand*(
         tasksResult.add fmt"  {readableTime} "
         if task.important.get:
           tasksResult.add "!"
-        tasksResult.add fmt"{task.name} - {task.storyPoints}sp{task.energyBack}eb{taskDurationMin}min : {hr time}, {taskDurationMin}m" & "\l"
+        tasksResult.add fmt"{task.name} - {task.storyPoints.get}sp{task.energyBack.get}eb{taskDurationMin}min : {hr time}, {taskDurationMin}m" & "\l"
 
         var actionsResult = ""
         for action in task.actions:
