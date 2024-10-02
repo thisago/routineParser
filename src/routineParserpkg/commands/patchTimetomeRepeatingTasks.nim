@@ -32,14 +32,13 @@ proc patchTimetomeRepeatingTasksCommand*(
         for action in task.actions:
           taskDuration += action.duration.toDuration
           taskTolerance += routine.config.tolerance.betweenActions.get.toDuration
-        if task.timetome.isSome:
-          repeatingTasks.add initTtmRepeatingTask(
-            name = fmt"{task.name} - {task.storyPoints.get}sp{task.energyBack.get}eb",
-            duration = taskDuration,
-            activityId = activities[task.timetome.get],
-            scheduled = time,
-            important = task.important.get
-          )
+        repeatingTasks.add initTtmRepeatingTask(
+          name = fmt"{task.name} - {task.storyPoints.get}sp{task.energyBack.get}eb",
+          duration = taskDuration,
+          activityId = activities[task.timetome.get],
+          scheduled = time,
+          important = task.important.get
+        )
         time += taskDuration
         time += taskTolerance
         time += routine.config.tolerance.betweenTasks.get.toDuration

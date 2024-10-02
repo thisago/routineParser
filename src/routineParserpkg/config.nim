@@ -31,7 +31,7 @@ type
 
   RoutineBlockTask* {.sparse.} = object
     name*: string
-    timetome*: Option[string]
+    timetome* {.defaultVal: "Other".some}: Option[string]
     important*: Option[bool]
     storyPoints*: Option[int]
     energyBack*: Option[int]
