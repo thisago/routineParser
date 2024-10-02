@@ -1,3 +1,4 @@
+import std/options
 import pkg/yaml
 
 type
@@ -6,20 +7,20 @@ type
     config*: RoutineConfig
     blocks*: seq[RoutineBlock]
 
-  RoutineConfig* = object
-    dayStart*: string
-    dayEnd*: string
-    idealStoryPoints*: int
+  RoutineConfig* {.sparse.} = object
+    dayStart* {.defaultVal: "06:00".some.}: Option[string]
+    dayEnd* {.defaultVal: "22:00".some.}: Option[string]
+    idealStoryPoints* {.defaultVal: 100.some.}: Option[int]
     tolerance*: RoutineConfigTolerance
 
-  RoutineConfigTolerance* = object
-    betweenBlocks*: string = "0min"
-    betweenTasks*: string = "0min"
-    betweenActions*: string = "0min"
+  RoutineConfigTolerance* {.sparse.} = object
+    betweenBlocks* {.defaultVal: "0min".some.}: Option[string]
+    betweenTasks* {.defaultVal: "0min".some}: Option[string]
+    betweenActions* {.defaultVal: "0min".some}: Option[string]
 
-  RoutineBlock* = object
+  RoutineBlock* {.sparse.} = object
     name*: string
-    repeat*: set[RoutineBlockRepetition]
+    repeat*: Option[set[RoutineBlockRepetition]]
     tasks*: seq[RoutineBlockTask]
 
   RoutineBlockRepetition* = enum
@@ -28,12 +29,12 @@ type
     Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday,
     Monthend, Monthstart
 
-  RoutineBlockTask* = object
+  RoutineBlockTask* {.sparse.} = object
     name*: string
-    timetome*: string # optional?
-    important*: bool
-    storyPoints*: int
-    energyBack*: int # storypoints back
+    timetome*: Option[string]
+    important*: Option[bool]
+    storyPoints*: Option[int]
+    energyBack*: Option[int]
     actions*: seq[RoutineBlockTaskAction]
 
   RoutineBlockTaskAction* = object

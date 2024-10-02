@@ -23,7 +23,7 @@ proc summaryCommand*(
 
   var blocks: seq[RoutineBlock]
   for blk in routine.blocks:
-    if blk.repeat.isForToday today:
+    if blk.repeat.get.isForToday today:
       blocks.add blk
 
   result.dayHours = dayDuration.toHours
@@ -34,4 +34,4 @@ proc summaryCommand*(
   result.totalStoryPoints = result.rawStoryPoints - result.rawEnergyBack
 
   result.valid = result.realNeededHours <= result.dayHours and
-                 result.totalStoryPoints <= routine.config.idealStoryPoints
+                 result.totalStoryPoints <= routine.config.idealStoryPoints.get

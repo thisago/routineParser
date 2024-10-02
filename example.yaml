@@ -15,7 +15,6 @@ blocks:
     tasks:
       - name: "Exit bedroom"
         timetome: "Getting ready"
-        important: false
         storyPoints: 2
         energyBack: 2
         actions:

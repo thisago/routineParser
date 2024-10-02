@@ -1,6 +1,12 @@
 import std/[times, strutils, strformat, math]
+from std/options import Option, isSome
 
 import routineParserpkg/config
+
+func get*[T](opt: Option[T]): T =
+  ## Gets or default
+  if opt.isSome:
+    result = options.get opt
 
 func toDuration*(spec: string): Duration =
   ## Currently only supports minutes
@@ -26,8 +32,8 @@ func splitHours*(hours: float): tuple[hours, minutes: int] =
 
 func dayDuration*(routineConfig: RoutineConfig): Duration =
   let
-    dayStart = clockToHours routineConfig.dayStart
-    dayEnd = clockToHours routineConfig.dayEnd
+    dayStart = clockToHours routineConfig.dayStart.get
+    dayEnd = clockToHours routineConfig.dayEnd.get
     duration = dayEnd - dayStart
     t = splitHours duration
   result = initDuration(hours = t.hours, minutes = t.minutes)
@@ -49,13 +55,13 @@ func toDuration*(hours: float): Duration =
 
 
 func duration*(task: RoutineBlockTask; tolerances: RoutineConfigTolerance): Duration =
-  let toleranceBetweenActions = tolerances.betweenActions.toDuration
+  let toleranceBetweenActions = tolerances.betweenActions.get.toDuration
   for action in task.actions:
     result += action.duration.toDuration
     result += toleranceBetweenActions
 
 func duration*(blk: RoutineBlock; tolerances: RoutineConfigTolerance): Duration =
-  let toleranceBetweenTasks = tolerances.betweenTasks.toDuration
+  let toleranceBetweenTasks = tolerances.betweenTasks.get.toDuration
   for task in blk.tasks:
     result += task.duration tolerances
     result += toleranceBetweenTasks
@@ -64,7 +70,7 @@ func duration*(
   blocks: seq[RoutineBlock];
   tolerances: RoutineConfigTolerance
 ): Duration =
-  let toleranceBetweenBlocks = tolerances.betweenBlocks.toDuration
+  let toleranceBetweenBlocks = tolerances.betweenBlocks.get.toDuration
   for blk in blocks:
     result += blk.duration tolerances
     result += toleranceBetweenBlocks
@@ -103,10 +109,10 @@ func totalStoryPoints*(blocks: seq[RoutineBlock]): int =
   ## Sums all routine storypoints
   for blk in blocks:
     for task in blk.tasks:
-      result += task.storyPoints
+      result += task.storyPoints.get
 
 func totalEnergyBack*(blocks: seq[RoutineBlock]): int =
   ## Sums all routine energyBack
   for blk in blocks:
     for task in blk.tasks:
-      result += task.energyBack
+      result += task.energyBack.get

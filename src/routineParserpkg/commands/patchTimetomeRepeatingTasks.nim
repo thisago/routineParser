@@ -1,6 +1,7 @@
 from std/times import initDuration, `+=`, parse, now
 import std/json
 from std/strformat import fmt
+from std/options import isSome
 
 import routineParserpkg/[config, utils, timetome]
 
@@ -19,29 +20,30 @@ proc patchTimetomeRepeatingTasksCommand*(
   var repeatingTasks: seq[TtmRepeatingTask]
 
   var realDayStart = if dayStart >= 0: dayStart
-                     else: clockToHours routine.config.dayStart
+                     else: clockToHours routine.config.dayStart.get
   var time = realDayStart.toDuration
 
   for blk in routine.blocks:
-    if blk.repeat.isForToday today:
+    if blk.repeat.get.isForToday today:
       for task in blk.tasks:
         var
           taskDuration = initDuration(hours = 0)
           taskTolerance = initDuration(hours = 0)
         for action in task.actions:
           taskDuration += action.duration.toDuration
-          taskTolerance += routine.config.tolerance.betweenActions.toDuration
-        repeatingTasks.add initTtmRepeatingTask(
-          name = fmt"{task.name} - {task.storyPoints}sp{task.energyBack}eb",
-          duration = taskDuration,
-          activityId = activities[task.timetome],
-          scheduled = time,
-          important = task.important
-        )
+          taskTolerance += routine.config.tolerance.betweenActions.get.toDuration
+        if task.timetome.isSome:
+          repeatingTasks.add initTtmRepeatingTask(
+            name = fmt"{task.name} - {task.storyPoints}sp{task.energyBack}eb",
+            duration = taskDuration,
+            activityId = activities[task.timetome.get],
+            scheduled = time,
+            important = task.important.get
+          )
         time += taskDuration
         time += taskTolerance
-        time += routine.config.tolerance.betweenTasks.toDuration
-      time += routine.config.tolerance.betweenBlocks.toDuration
+        time += routine.config.tolerance.betweenTasks.get.toDuration
+      time += routine.config.tolerance.betweenBlocks.get.toDuration
 
   timetome.repeatings = repeatingTasks
 
