@@ -1,5 +1,9 @@
 #+title: Changelog
 
+* Version 0.4.0 (Oct 2024)
+- Optional YAML props
+- Better Markdown representation
+
 * Version 0.3.0 (25 Sep 2024)
 - Option to highlight now action at Markdown representation =--highlightAction=
 - Added Mermaid Gantt Chart representation
