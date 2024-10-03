@@ -8,15 +8,15 @@ type
     blocks*: seq[RoutineBlock]
 
   RoutineConfig* {.sparse.} = object
-    dayStart* {.defaultVal: "06:00".some.}: Option[string]
-    dayEnd* {.defaultVal: "22:00".some.}: Option[string]
-    idealStoryPoints* {.defaultVal: 100.some.}: Option[int]
+    dayStart* {.defaultVal: "06:00".some.}: Option[string] = "06:00".some
+    dayEnd* {.defaultVal: "22:00".some.}: Option[string] = "22:00".some
+    idealStoryPoints* {.defaultVal: 100.some.}: Option[int] = 100.some
     tolerance*: RoutineConfigTolerance
 
   RoutineConfigTolerance* {.sparse.} = object
-    betweenBlocks* {.defaultVal: "0min".some.}: Option[string]
-    betweenTasks* {.defaultVal: "0min".some}: Option[string]
-    betweenActions* {.defaultVal: "0min".some}: Option[string]
+    betweenBlocks* {.defaultVal: "0min".some.}: Option[string] = "0min".some
+    betweenTasks* {.defaultVal: "0min".some}: Option[string] = "0min".some
+    betweenActions* {.defaultVal: "0min".some}: Option[string] = "0min".some
 
   RoutineBlock* {.sparse.} = object
     name*: string
@@ -31,7 +31,7 @@ type
 
   RoutineBlockTask* {.sparse.} = object
     name*: string
-    timetome* {.defaultVal: "Other".some}: Option[string]
+    timetome* {.defaultVal: "Other".some}: Option[string] = "Other".some
     important*: Option[bool]
     storyPoints*: Option[int]
     energyBack*: Option[int]

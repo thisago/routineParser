@@ -1,6 +1,6 @@
 from std/strformat import fmt
 from std/strutils import strip
-from std/times import `+=`, parse, now, `<`, initDuration, hour, minute, second
+from std/times import `+=`, parse, now, `<`, initDuration, hour, minute, second, `+`
 
 import routineParserpkg/[config, utils]
 
@@ -36,7 +36,10 @@ proc representCommand*(
       let blockStart = time
       var tasksResult = ""
       for task in blk.tasks:
-        let taskStart = time
+        let
+          taskStart = time
+          taskDuration = task.duration(RoutineConfigTolerance())
+          timeEnd = time + taskDuration
         var actionsResult = ""
         for action in task.actions:
           var nextTime = time
@@ -53,7 +56,7 @@ proc representCommand*(
         tasksResult.add "### "
         if task.important.get:
           tasksResult.add "!"
-        tasksResult.add fmt"{task.name} - {task.storyPoints.get}sp{task.energyBack.get}eb ({hr taskStart}-{hr time})" & "\l"
+        tasksResult.add fmt"{task.name} - {task.storyPoints.get}sp{task.energyBack.get}eb ({hr taskStart}-{hr timeEnd})" & "\l"
         tasksResult.add actionsResult
         time += toleranceBetweenTasks
       result.add "\l" & fmt"## {blk.name} ({hr blockStart}-{hr time})" & "\l"
