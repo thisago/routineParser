@@ -15,19 +15,19 @@ type
 
   RoutineConfigTolerance* {.sparse.} = object
     betweenBlocks* {.defaultVal: "0min".some.}: Option[string] = "0min".some
-    betweenTasks* {.defaultVal: "0min".some}: Option[string] = "0min".some
-    betweenActions* {.defaultVal: "0min".some}: Option[string] = "0min".some
-
-  RoutineBlock* {.sparse.} = object
-    name*: string
-    repeat*: Option[set[RoutineBlockRepetition]]
-    tasks*: seq[RoutineBlockTask]
+    betweenTasks* {.defaultVal: "0min".some.}: Option[string] = "0min".some
+    betweenActions* {.defaultVal: "0min".some.}: Option[string] = "0min".some
 
   RoutineBlockRepetition* = enum
     Everyday,
     Weekdays, Weekends,
     Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday,
     Monthend, Monthstart
+
+  RoutineBlock* {.sparse.} = object
+    name*: string
+    repeat* {.defaultVal: {Everyday}.some.}: Option[set[RoutineBlockRepetition]] = {Everyday}.some
+    tasks*: seq[RoutineBlockTask]
 
   RoutineBlockTask* {.sparse.} = object
     name*: string
