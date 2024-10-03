@@ -1,6 +1,6 @@
 from std/strformat import fmt
 from std/strutils import strip
-from std/times import `+=`, parse, now, `<`, initDuration, hour, minute, second, `+`
+from std/times import `+=`, parse, now, `<`, initDuration, hour, minute, second, `+`, inMinutes
 
 import routineParserpkg/[config, utils]
 
@@ -56,7 +56,7 @@ proc representCommand*(
         tasksResult.add "### "
         if task.important.get:
           tasksResult.add "!"
-        tasksResult.add fmt"{task.name} - {task.storyPoints.get}sp{task.energyBack.get}eb ({hr taskStart}-{hr timeEnd})" & "\l"
+        tasksResult.add fmt"{task.name} - {task.storyPoints.get}sp{task.energyBack.get}eb{taskDuration.inMinutes}min ({hr taskStart}-{hr timeEnd})" & "\l"
         tasksResult.add actionsResult
         time += toleranceBetweenTasks
       result.add "\l" & fmt"## {blk.name} ({hr blockStart}-{hr time})" & "\l"
