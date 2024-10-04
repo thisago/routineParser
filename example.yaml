@@ -1,101 +1,265 @@
-version: 0.0.1
+version: 0.1.0
 
 config:
-  dayStart: 08:00
-  dayEnd: 21:00
-  idealStoryPoints: 30
+  dayStart: 06:00
+  dayEnd: 21:30
+  idealStoryPoints: 20
+  idealBalance: 200 # final balance of the day, the earned money
+  idealHourPrice: 30 # the ideal price of your average billable hour
+  idealPriceTotal: 200 # total of hour prices of the day, including negative values
+  idealBillableHours: 5 # total billable hours of the day
   tolerance:
-    betweenBlocks: 8min
-    betweenTasks: 5min
-    betweenActions: 2min
+    betweenBlocks: 2min
+    betweenTasks: 2min
+    betweenActions: 1min
 
 blocks:
-  - name: "Wake up"
+  - name: "Getting Started"
     tasks:
-      - name: "Exit bedroom"
-        timetome: "Getting ready"
-        storyPoints: 2
+      - name: "Exit Bedroom"
+        timetome: "Getting Started"
+        storyPoints: 1
+        actions:
+          - name: "Wake the bed"
+            duration: 3min
+          - name: "Vest Clothes"
+            duration: 3min
+          - name: "Drink Water"
+            duration: 1min
+          - name: "Make the Bed"
+            duration: 3min
+
+      - name: "Breakfast"
+        timetome: "Getting Started"
+        important: false
+        storyPoints: 1
         energyBack: 2
         actions:
-          - name: "Vest clothes"
+          - name: "Make Coffee"
             duration: 5min
-          - name: "Make the bed"
+          - name: "Prepare Breakfast"
+            duration: 20min
+          - name: "Eat"
+            duration: 6min
+
+  - name: "Plan the Week"
+    repeat: [Weekends]
+    tasks:
+      - name: "Weekly Planning"
+        timetome: "Plan"
+        important: true
+        storyPoints: 5
+        energyBack: 1
+        actions:
+          - name: "Past Week Reporting"
             duration: 5min
-          - name: "Drink water"
-            duration: 1min
+          - name: "Rate the Past Week"
+            duration: 5min
+          - name: "Review Plans and Tasks"
+            duration: 15min
+          - name: "Write the Plan"
+            duration: 10min
+
+  - name: "Plan Personal Day"
+    repeat: [Everyday]
+    tasks:
+      - name: "Personal Day Planning"
+        timetome: "Plan"
+        important: false
+        storyPoints: 3
+        energyBack: 0
+        actions:
+          - name: "Yesterday Backtrack"
+            duration: 5min
+          - name: "Review Plans and Tasks"
+            duration: 5min
+          - name: "Review the Routine"
+            duration: 5min
+          - name: "Review Past Plan"
+            duration: 5min
+          - name: "Plan the Day"
+            duration: 5min
+
+  - name: "Plan the Work Week"
+    repeat: [Weekends]
+    tasks:
+      - name: "Work Week Planning"
+        timetome: "Plan"
+        important: true
+        storyPoints: 3
+        energyBack: 0
+        actions:
+          - name: "Past Work Week Reporting"
+            duration: 5min
+          - name: "Rate the Past Work Week"
+            duration: 5min
+          - name: "Review Plans and Tasks"
+            duration: 10min
+          - name: "Write the Plan"
+            duration: 5min
+
+  # exercise and health
 
   - name: "Waking the body"
     repeat: [Everyday]
     tasks:
-      - name: "Breakfast"
-        timetome: "Getting ready"
-        important: true
-        storyPoints: 2
-        energyBack: 3
-        actions:
-          - name: "Prepare the breakfast"
-            duration: 20min
-          - name: "Eat the breakfast"
-            duration: 10min
-
-      - name: "Morning exercises"
+      - name: "Morning Exercises"
         timetome: "Exercises"
         important: false
         storyPoints: 3
-        energyBack: 4
+        energyBack: 5
         actions:
-          - name: "Warm up"
-            duration: 10min
+          - name: "Warm Up"
+            duration: 6min
           - name: "Calisthenics"
             duration: 20min
 
-  - name: "Relax"
-    repeat: [Weekends]
-    tasks:
-      - name: "Go to park"
-        timetome: "Hobby/Fun"
+      - name: "Morning Bath"
+        timetome: "Getting Started"
         important: false
-        storyPoints: 1
-        energyBack: 3
+        storyPoints: 3
+        energyBack: 5
         actions:
-          - name: "Walk to the park"
-            duration: 20min
-          - name: "Stay there"
-            duration: 30min
-          - name: "Walk back home"
-            duration: 20min
-
-  - name: "Morning work"
-    repeat: [Weekdays]
-    tasks:
-      - name: "Work at morning"
-        timetome: "Work"
-        important: false
-        storyPoints: 8
-        energyBack: 2
-        actions:
-          - name: "Work"
-            duration: 180min
-
-  - name: "Lunch"
-    repeat: [Everyday]
-    tasks:
-      - name: "Lunch"
-        timetome: "Getting Ready"
-        important: false
-        storyPoints: 2
-        energyBack: 3
-        actions:
-          - name: "Prepare the lunch"
-            duration: 20min
-          - name: "Eat"
+          - name: "Prepare to Take Bath"
+            duration: 2min
+          - name: "Cold Bath"
             duration: 10min
 
-      - name: "Clean kitchen"
-        timetome: "Getting Ready"
+  - name: "Morning Work"
+    repeat: [Weekdays]
+    tasks:
+      - name: "Work Day Planning"
+        timetome: "Plan"
+        storyPoints: 3
+        actions:
+          - name: "Analyze Tasks"
+            duration: 5min
+          - name: "Review Past Plan"
+            duration: 5min
+          - name: "Write the plan"
+            duration: 5min
+
+      - name: "Morning Work"
+        timetome: "Work"
+        important: true
+        storyPoints: 5
+        actions:
+          - name: "Work Smart"
+            duration: 200min
+
+  - name: "Plan the Month"
+    repeat: [Monthstart]
+    tasks:
+      - name: "Monthly Planning"
+        timetome: "Plan"
+        important: true
+        storyPoints: 8
+        energyBack: 3
+        actions:
+          - name: "Past Month Reporting"
+            duration: 10min
+          - name: "Rate the Past Month"
+            duration: 5min
+          - name: "Check Tasks"
+            duration: 10min
+          - name: "Write the Plan"
+            duration: 15min
+
+  - name: "Third Refection"
+    repeat: [Everyday]
+    tasks:
+      - name: "Light Lunch"
+        timetome: "Getting Started"
         important: false
-        storyPoints: 2
+        storyPoints: 3
         energyBack: 1
         actions:
-          - name: "Wash dishes"
-            duration: 100min
+          - name: "Prepare Food"
+            duration: 25min
+          - name: "Eat"
+            duration: 8min
+
+      - name: "Help Digestion"
+        timetome: "Exercises"
+        important: true
+        storyPoints: 3
+        actions:
+          - name: "Light Exercises"
+            duration: 15min
+
+  - name: "Afternoon Work"
+    repeat: [Weekdays]
+    tasks:
+      - name: "Afternoon Work"
+        timetome: "Work"
+        storyPoints: 5
+        actions:
+          - name: "Work Smarter"
+            duration: 160min
+
+      - name: "Finish the Work Day"
+        timetome: "Writing"
+        storyPoints: 2
+        actions:
+          - name: "Write Summary"
+            duration: 2min
+          - name: "Finish the Report"
+            duration: 5min
+
+  - name: "Stop the work"
+    tasks:
+      - name: "Last Refection"
+        timetome: "Getting Started"
+        important: false
+        storyPoints: 2
+        actions:
+          - name: "Prepare the Food"
+            duration: 15min
+          - name: "Eat"
+            duration: 8min
+
+      - name: "Last bath"
+        timetome: "Getting Started"
+        important: true
+        storyPoints: 3
+        energyBack: 5
+        actions:
+          - name: "Prepare to Take Bath"
+            duration: 2min
+          - name: "Take Bath"
+            duration: 10min
+
+  - name: "Learn"
+    repeat: [Weekends]
+    tasks:
+      - name: "Learning New Things"
+        timetome: "Study"
+        storyPoints: 5
+        actions:
+          - name: "Study New Information"
+            duration: 60min
+
+  - name: "Shutting down"
+    repeat: [Everyday]
+    tasks:
+      - name: "Finish the Day"
+        timetome: "Writing"
+        storyPoints: 3
+        actions:
+          - name: "Finish the Personal Report"
+            duration: 10min
+
+      - name: "Review Routine"
+        timetome: "Plan"
+        storyPoints: 2
+        actions:
+          - name: "Improve and review the routine"
+            duration: 15min
+
+      - name: "Patch timetome"
+        timetome: "Planned Tasks"
+        important: false
+        storyPoints: 1
+        actions:
+          - name: "Patch it with Termux script"
+            duration: 3min
