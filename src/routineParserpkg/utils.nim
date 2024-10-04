@@ -111,8 +111,23 @@ func totalStoryPoints*(blocks: seq[RoutineBlock]): int =
     for task in blk.tasks:
       result += task.storyPoints.get
 
-func totalEnergyBack*(blocks: seq[RoutineBlock]): int =
-  ## Sums all routine energyBack
+func totalSatisfaction*(blocks: seq[RoutineBlock]): int =
+  ## Sums all routine `satisfaction`
   for blk in blocks:
     for task in blk.tasks:
-      result += task.energyBack.get
+      result += task.satisfaction.get
+
+func billable*(blocks: seq[RoutineBlock]): tuple[positive, negative, hours: float] =
+  ## Sums all routine `satisfaction`
+  for blk in blocks:
+    for task in blk.tasks:
+      let
+        duration = task.duration RoutineConfigTolerance()
+        hours = duration.inMinutes / 60
+        price = task.price.get * hours
+      if price != 0:
+        result.hours += hours
+        if price > 0:
+          result.positive += price
+        elif price < 0:
+          result.negative += price

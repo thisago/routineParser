@@ -7,12 +7,9 @@ proc summaryCommand*(
   today = ""
 ): tuple[
   valid: bool;
-  rawNeededHours: float;
-  realNeededHours: float;
-  dayHours: float,
-  rawStoryPoints: int,
-  rawEnergyBack: int,
-  totalStoryPoints: int,
+  rawNeededHours, realNeededHours, dayHours: float,
+  totalStoryPoints, totalSatisfaction: int,
+  totalPositiveBilled, totalNegativeBilled, totalBilled, totalBalance, totalBilledHours: float,
 ] =
   ## Checks if routine is not larger than day
   let
@@ -29,9 +26,19 @@ proc summaryCommand*(
   result.dayHours = dayDuration.toHours
   result.rawNeededHours = toHours blocks.duration RoutineConfigTolerance()
   result.realNeededHours = toHours blocks.duration routine.config.tolerance
-  result.rawStoryPoints = blocks.totalStoryPoints
-  result.rawEnergyBack = blocks.totalEnergyBack
-  result.totalStoryPoints = result.rawStoryPoints - result.rawEnergyBack
+  result.totalStoryPoints = blocks.totalStoryPoints
+  result.totalSatisfaction = blocks.totalSatisfaction
+
+  let billed = blocks.billable
+  result.totalPositiveBilled = billed.positive
+  result.totalNegativeBilled = billed.negative
+  result.totalBilled = billed.positive - billed.negative
+  result.totalBalance = billed.positive + billed.negative
+  result.totalBilledHours = billed.hours
 
   result.valid = result.realNeededHours <= result.dayHours and
-                 result.totalStoryPoints <= routine.config.idealStoryPoints.get
+                 result.totalStoryPoints <= routine.config.prerequisites.maxStoryPoints.get and
+                 result.totalSatisfaction >= routine.config.prerequisites.minSatisfaction.get and
+                 result.totalBalance >= routine.config.prerequisites.minBalance.get and
+                 result.totalBilled >= routine.config.prerequisites.minBilled.get and
+                 result.totalBilledHours >= routine.config.prerequisites.minBilledHours.get

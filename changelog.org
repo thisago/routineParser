@@ -3,6 +3,10 @@
 * Version 0.4.0 (Oct 2024)
 - Optional YAML props
 - Better Markdown representation
+- Satisfaction level instead of "energy back"
+- Refactored the prerequisite configuration
+- Added billing to your hours
+  - You can pay or earn! Define the expected earnings and transactions over your day and even how much billable hours you expect.
 
 * Version 0.3.0 (25 Sep 2024)
 - Option to highlight now action at Markdown representation =--highlightAction=

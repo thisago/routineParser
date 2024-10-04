@@ -3,11 +3,13 @@ version: 0.1.0
 config:
   dayStart: 06:00
   dayEnd: 21:30
-  idealStoryPoints: 20
-  idealBalance: 200 # final balance of the day, the earned money
-  idealHourPrice: 30 # the ideal price of your average billable hour
-  idealPriceTotal: 200 # total of hour prices of the day, including negative values
-  idealBillableHours: 5 # total billable hours of the day
+  prerequisites:
+    maxStoryPoints: 30
+    minBalance: 30 # final balance of the day, the earned money
+    minAverageHourPrice: 30 # the ideal price of your average billable hour
+    minBilled: 200 # total of hour prices of the day, including negative values
+    minBilledHours: 50 # total billable hours of the day
+    minSatisfaction: 10
   tolerance:
     betweenBlocks: 2min
     betweenTasks: 2min
@@ -18,7 +20,6 @@ blocks:
     tasks:
       - name: "Exit Bedroom"
         timetome: "Getting Started"
-        storyPoints: 1
         actions:
           - name: "Wake the bed"
             duration: 3min
@@ -32,8 +33,7 @@ blocks:
       - name: "Breakfast"
         timetome: "Getting Started"
         important: false
-        storyPoints: 1
-        energyBack: 2
+        satisfaction: 2
         actions:
           - name: "Make Coffee"
             duration: 5min
@@ -48,8 +48,8 @@ blocks:
       - name: "Weekly Planning"
         timetome: "Plan"
         important: true
-        storyPoints: 5
-        energyBack: 1
+        storyPoints: 1
+        satisfaction: 1
         actions:
           - name: "Past Week Reporting"
             duration: 5min
@@ -66,8 +66,8 @@ blocks:
       - name: "Personal Day Planning"
         timetome: "Plan"
         important: false
-        storyPoints: 3
-        energyBack: 0
+        storyPoints: 1
+        price: -300
         actions:
           - name: "Yesterday Backtrack"
             duration: 5min
@@ -86,8 +86,7 @@ blocks:
       - name: "Work Week Planning"
         timetome: "Plan"
         important: true
-        storyPoints: 3
-        energyBack: 0
+        storyPoints: 1
         actions:
           - name: "Past Work Week Reporting"
             duration: 5min
@@ -106,8 +105,7 @@ blocks:
       - name: "Morning Exercises"
         timetome: "Exercises"
         important: false
-        storyPoints: 3
-        energyBack: 5
+        satisfaction: 5
         actions:
           - name: "Warm Up"
             duration: 6min
@@ -117,8 +115,7 @@ blocks:
       - name: "Morning Bath"
         timetome: "Getting Started"
         important: false
-        storyPoints: 3
-        energyBack: 5
+        satisfaction: 5
         actions:
           - name: "Prepare to Take Bath"
             duration: 2min
@@ -130,7 +127,8 @@ blocks:
     tasks:
       - name: "Work Day Planning"
         timetome: "Plan"
-        storyPoints: 3
+        storyPoints: 5
+        price: 10
         actions:
           - name: "Analyze Tasks"
             duration: 5min
@@ -143,6 +141,7 @@ blocks:
         timetome: "Work"
         important: true
         storyPoints: 5
+        price: 30
         actions:
           - name: "Work Smart"
             duration: 200min
@@ -153,8 +152,8 @@ blocks:
       - name: "Monthly Planning"
         timetome: "Plan"
         important: true
-        storyPoints: 8
-        energyBack: 3
+        storyPoints: 1
+        satisfaction: 3
         actions:
           - name: "Past Month Reporting"
             duration: 10min
@@ -172,7 +171,7 @@ blocks:
         timetome: "Getting Started"
         important: false
         storyPoints: 3
-        energyBack: 1
+        satisfaction: 1
         actions:
           - name: "Prepare Food"
             duration: 25min
@@ -193,13 +192,13 @@ blocks:
       - name: "Afternoon Work"
         timetome: "Work"
         storyPoints: 5
+        price: 20
         actions:
           - name: "Work Smarter"
             duration: 160min
 
       - name: "Finish the Work Day"
         timetome: "Writing"
-        storyPoints: 2
         actions:
           - name: "Write Summary"
             duration: 2min
@@ -210,8 +209,7 @@ blocks:
     tasks:
       - name: "Last Refection"
         timetome: "Getting Started"
-        important: false
-        storyPoints: 2
+        satisfaction: 5
         actions:
           - name: "Prepare the Food"
             duration: 15min
@@ -221,8 +219,7 @@ blocks:
       - name: "Last bath"
         timetome: "Getting Started"
         important: true
-        storyPoints: 3
-        energyBack: 5
+        satisfaction: 2
         actions:
           - name: "Prepare to Take Bath"
             duration: 2min
@@ -234,7 +231,7 @@ blocks:
     tasks:
       - name: "Learning New Things"
         timetome: "Study"
-        storyPoints: 5
+        storyPoints: 2
         actions:
           - name: "Study New Information"
             duration: 60min
@@ -244,14 +241,12 @@ blocks:
     tasks:
       - name: "Finish the Day"
         timetome: "Writing"
-        storyPoints: 3
         actions:
           - name: "Finish the Personal Report"
             duration: 10min
 
       - name: "Review Routine"
         timetome: "Plan"
-        storyPoints: 2
         actions:
           - name: "Improve and review the routine"
             duration: 15min
@@ -259,7 +254,6 @@ blocks:
       - name: "Patch timetome"
         timetome: "Planned Tasks"
         important: false
-        storyPoints: 1
         actions:
           - name: "Patch it with Termux script"
             duration: 3min
