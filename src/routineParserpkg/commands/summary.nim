@@ -39,6 +39,7 @@ proc summaryCommand*(
   result.valid = result.realNeededHours <= result.dayHours and
                  result.totalStoryPoints <= routine.config.prerequisites.maxStoryPoints.get and
                  result.totalSatisfaction >= routine.config.prerequisites.minSatisfaction.get and
-                 result.totalBalance >= routine.config.prerequisites.minBalance.get and
-                 result.totalBilled >= routine.config.prerequisites.minBilled.get and
-                 result.totalBilledHours >= routine.config.prerequisites.minBilledHours.get
+                 (if routine.config.nonWorkDays.get.isForToday today: true else:
+                   result.totalBalance >= routine.config.prerequisites.minBalance.get and
+                   result.totalBilled >= routine.config.prerequisites.minBilled.get and
+                   result.totalBilledHours >= routine.config.prerequisites.minBilledHours.get)

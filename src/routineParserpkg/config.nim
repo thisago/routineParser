@@ -12,6 +12,7 @@ type
     dayEnd* {.defaultVal: "22:00".some.}: Option[string] = "22:00".some
     tolerance*: RoutineConfigTolerance
     prerequisites*: RoutineConfigPrerequisites
+    nonWorkDays*: Option[set[RoutineBlockRepetition]]
 
   RoutineConfigPrerequisites* {.sparse.} = object
     maxStoryPoints* {.defaultVal: 100.some.}: Option[int] = 100.some
