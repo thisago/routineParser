@@ -131,3 +131,33 @@ func billable*(blocks: seq[RoutineBlock]): tuple[positive, negative, hours: floa
           result.positive += price
         elif price < 0:
           result.negative += price
+
+func repr*(task: RoutineBlockTask): string =
+  let taskDur = task.duration(RoutineConfigTolerance())
+
+  if task.important.get:
+    result = "!"
+
+  result.add [
+    task.name,
+    " - ",
+    fmt"{task.storyPoints.get}sp",
+    fmt"{task.satisfaction.get}sf",
+    fmt"{task.price.get.int}pr",
+    fmt"{taskDur.inMinutes}min"
+  ].join ""
+
+func repr*(task: UnplannedTask): string =
+  let taskDur = task.duration.toDuration
+
+  if task.important.get:
+    result = "!"
+
+  result.add [
+    task.name,
+    " - ",
+    fmt"{task.storyPoints.get}sp",
+    fmt"{task.satisfaction.get}sf",
+    fmt"{task.price.get.int}pr",
+    fmt"{taskDur.inMinutes}min"
+  ].join ""

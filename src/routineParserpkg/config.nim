@@ -6,6 +6,7 @@ type
     version*: string
     config*: RoutineConfig
     blocks*: seq[RoutineBlock]
+    unplannedTasks*: seq[UnplannedTask]
 
   RoutineConfig* {.sparse.} = object
     dayStart* {.defaultVal: "06:00".some.}: Option[string] = "06:00".some
@@ -46,6 +47,17 @@ type
   RoutineBlockTaskAction* = object
     name*: string
     duration*: string
+
+
+  UnplannedTask* {.sparse.} = object
+    name*: string
+    timetome* {.defaultVal: "Other".some}: Option[string] = "Other".some
+    repeat* {.defaultVal: {Everyday}.some.}: Option[set[RoutineBlockRepetition]] = {Everyday}.some
+    important*: Option[bool]
+    storyPoints*, satisfaction*: Option[int]
+    price*: Option[float]
+    duration*: string
+
 
 proc loadConfig*(yamlFile: string): Routine =
   result = loadAs[Routine](yamlFile.readFile)

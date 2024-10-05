@@ -53,10 +53,7 @@ proc representCommand*(
           actionsResult.add fmt" - {action.duration} ({hr actionStart}-{hr nextTime})" & " \l"
           nextTime += toleranceBetweenActions
           time = nextTime
-        tasksResult.add "### "
-        if task.important.get:
-          tasksResult.add "!"
-        tasksResult.add fmt"{task.name} - {task.storyPoints.get}sp{task.satisfaction.get}sf{task.price.get.int}pr{taskDuration.inMinutes}min ({hr taskStart}-{hr timeEnd})" & "\l"
+        tasksResult.add fmt"### {task.repr} ({hr taskStart}-{hr timeEnd})" & "\l"
         tasksResult.add actionsResult
         time += toleranceBetweenTasks
       result.add "\l" & fmt"## {blk.name} ({hr blockStart}-{hr time})" & "\l"

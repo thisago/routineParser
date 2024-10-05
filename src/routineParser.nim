@@ -2,7 +2,8 @@ import routineParserpkg/commands/[
   summary,
   represent,
   patchTimetomeRepeatingTasks,
-  ganttChart
+  ganttChart,
+  representUnplanned,
 ]
 
 when isMainModule:
@@ -21,4 +22,7 @@ when isMainModule:
   ], [
     ganttChartCommand,
     cmdName = "ganttChart",
+  ], [
+    representUnplannedCommand,
+    cmdName = "representUnplanned",
   ])

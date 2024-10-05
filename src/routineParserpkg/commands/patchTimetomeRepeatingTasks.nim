@@ -1,7 +1,6 @@
 from std/times import initDuration, `+=`, parse, now
 import std/json
 from std/strformat import fmt
-from std/options import isSome
 
 import routineParserpkg/[config, utils, timetome]
 
@@ -33,7 +32,7 @@ proc patchTimetomeRepeatingTasksCommand*(
           taskDuration += action.duration.toDuration
           taskTolerance += routine.config.tolerance.betweenActions.get.toDuration
         repeatingTasks.add initTtmRepeatingTask(
-          name = fmt"{task.name} - {task.storyPoints.get}sp{task.satisfaction.get}sf{task.price.get.int}pr",
+          name = task.repr,
           duration = taskDuration,
           activityId = activities[task.timetome.get],
           scheduled = time,
@@ -43,6 +42,14 @@ proc patchTimetomeRepeatingTasksCommand*(
         time += taskTolerance
         time += routine.config.tolerance.betweenTasks.get.toDuration
       time += routine.config.tolerance.betweenBlocks.get.toDuration
+
+  for task in routine.unplannedTasks:
+    repeatingTasks.add initTtmRepeatingTask(
+      name = fmt"{task.repr} [unplanned]",
+      duration = task.duration.toDuration,
+      activityId = activities[task.timetome.get],
+      important = task.important.get
+    )
 
   timetome.repeatings = repeatingTasks
 

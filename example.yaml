@@ -257,3 +257,13 @@ blocks:
         actions:
           - name: "Patch it with Termux script"
             duration: 3min
+
+unplannedTasks:
+  - name: "Brew Extra Coffee"
+    timetome: "Getting Started"
+    satisfaction: 3
+    duration: 10min
+  - name: "Quick Meditation"
+    timetome: "Meditation"
+    satisfaction: 2
+    duration: 6min

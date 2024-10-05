@@ -1,9 +1,10 @@
 from std/strutils import join, contains, split
 from std/times import Duration, inSeconds, now, toUnix, toTime
 from std/strformat import fmt
-from std/json import JsonNode, `%*`, `%`, `[]`, items, getInt, getStr, `[]=`
+from std/json import JsonNode, `%*`, `%`, `[]`, items, getInt, getStr, `[]=`, newJNull
 from std/tables import Table, `[]=`
 from std/random import randomize, rand
+from std/options import Option, isSome, get, none, some
 
 export tables.`[]`
 
@@ -14,7 +15,7 @@ type
     name*: string
     important*: bool
     duration*: Duration
-    scheduled*: Duration
+    scheduled*: Option[Duration]
     activityId*: string
 
 using
@@ -31,13 +32,26 @@ func textFeatures*(task): string =
   ]
   if task.important:
     results.add "#important"
-
   result = results.join " "
 
 proc id*(task): int64 =
   ## timeto.me task ids is it's epoch
   randomize()
   result = now().toTime.toUnix + rand(0..9999)
+
+func initTtmRepeatingTask*(
+  name: string;
+  duration: Duration;
+  activityId: string;
+  important = false
+): TtmRepeatingTask =
+  TtmRepeatingTask(
+    name: name,
+    duration: duration,
+    scheduled: none Duration,
+    activityId: activityId,
+    important: important
+  )
 
 func initTtmRepeatingTask*(
   name: string;
@@ -48,7 +62,7 @@ func initTtmRepeatingTask*(
   TtmRepeatingTask(
     name: name,
     duration: duration,
-    scheduled: scheduled,
+    scheduled: scheduled.some,
     activityId: activityId,
     important: important
   )
@@ -61,7 +75,7 @@ proc toJson*(task): JsonNode =
     %19960, # last_day
     %1, # type_id
     %"1", # value - repetition (every day)
-    %task.scheduled.inSeconds, # daytime
+    if task.scheduled.isSome: %task.scheduled.get.inSeconds else: %newJNull(), # daytime
     %(if task.important: 1 else: 0) # is_important
   ]
 
