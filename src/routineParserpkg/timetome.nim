@@ -40,7 +40,7 @@ proc id*(task): int64 =
   for ch in task.name & task.activityId:
     seed += int ch
   randomize(seed)
-  result = rand(0'i64..9999999999'i64)
+  result = rand(0..999999999)
 
 func initTtmRepeatingTask*(
   name: string;
