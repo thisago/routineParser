@@ -9,6 +9,7 @@
   - You can pay or earn! Define the expected earnings and transactions over your day and even how much billable hours you expect.
   - Added a option to disable billing to specific days
 - Added unplanned tasks support
+- Added static timeto.me ids based on task name and activity
 
 * Version 0.3.0 (25 Sep 2024)
 - Option to highlight now action at Markdown representation =--highlightAction=

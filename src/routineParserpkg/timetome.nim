@@ -36,8 +36,11 @@ func textFeatures*(task): string =
 
 proc id*(task): int64 =
   ## timeto.me task ids is it's epoch
-  randomize()
-  result = now().toTime.toUnix + rand(0..9999)
+  var seed = 0
+  for ch in task.name & task.activityId:
+    seed += int ch
+  randomize(seed)
+  result = rand(0'i64..9999999999'i64)
 
 func initTtmRepeatingTask*(
   name: string;

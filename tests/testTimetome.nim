@@ -18,7 +18,7 @@ suite "task creation":
     check task.textFeatures == "Test task [routine] #a1234 #t600 #important"
 
   test "task id":
-    check task.id.`$`.len == 10
+    check task.id == 1907328163
 
   test "task to json":
     let node = task.toJson
