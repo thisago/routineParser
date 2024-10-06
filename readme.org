@@ -62,15 +62,31 @@ where subcommand syntaxes are as follows:
 * Example
 ** Summary
 #+begin_src bash :exports both :results pp
-routineParser summary -r example.yaml
+echo -n "- "
+routineParser summary -r example.yaml --today 2024-10-01 | sed 's/[\(\)]//g' | sed 's/, /\n- /g' # soon it will emit JSON
 #+end_src
 
 #+RESULTS:
-: (valid: false, rawNeededHours: 5.583333333333333, realNeededHours: 6.966666666666667, dayHours: 15.5, totalStoryPoints: 11, totalSatisfaction: 21, totalPositiveBilled: 0.0, totalNegativeBilled: -125.0, totalBilled: 125.0, totalBalance: -125.0, totalBilledHours: 0.4166666666666667)
+#+begin_example
+- valid: false
+- rawNeededHours: 10.61666666666667
+- realNeededHours: 12.1
+- dayHours: 15.5
+- totalStoryPoints: 23
+- totalSatisfaction: 23
+- totalPositiveBilled: 155.8333333333333
+- totalNegativeBilled: -125.0
+- totalBilled: 280.8333333333333
+- totalBalance: 30.83333333333331
+- totalBilledHours: 6.666666666666666
+- totalPositiveBilledHours: 6.25
+- totalNegativeBilledHours: 0.4166666666666667
+- minAverageHourPrice: 42.125
+#+end_example
 
 ** Markdown
 #+begin_src bash :exports both :results pp
-routineParser represent -r example.yaml
+routineParser represent -r example.yaml --today 2024-10-01
 #+end_src
 
 #+RESULTS:
@@ -86,66 +102,70 @@ routineParser represent -r example.yaml
 - Prepare Breakfast - 20min (06:22-06:42)
 - Eat - 6min (06:43-06:49)
 
-## Plan the Week (06:54-07:35)
-### !Weekly Planning - 1sp1sf0pr35min (06:54-07:29)
-- Past Week Reporting - 5min (06:54-06:59)
-- Rate the Past Week - 5min (07:00-07:05)
-- Review Plans and Tasks - 15min (07:06-07:21)
-- Write the Plan - 10min (07:22-07:32)
+## Plan Personal Day (06:54-07:26)
+### Personal Day Planning - 1sp0sf-300pr25min (06:54-07:19)
+- Yesterday Backtrack - 5min (06:54-06:59)
+- Review Plans and Tasks - 5min (07:00-07:05)
+- Review the Routine - 5min (07:06-07:11)
+- Review Past Plan - 5min (07:12-07:17)
+- Plan the Day - 5min (07:18-07:23)
 
-## Plan Personal Day (07:37-08:09)
-### Personal Day Planning - 1sp0sf-300pr25min (07:37-08:02)
-- Yesterday Backtrack - 5min (07:37-07:42)
-- Review Plans and Tasks - 5min (07:43-07:48)
-- Review the Routine - 5min (07:49-07:54)
-- Review Past Plan - 5min (07:55-08:00)
-- Plan the Day - 5min (08:01-08:06)
+## Waking the body (07:28-08:14)
+### Morning Exercises - 0sp5sf0pr26min (07:28-07:54)
+- Warm Up - 6min (07:28-07:34)
+- Calisthenics - 20min (07:35-07:55)
+### Morning Bath - 0sp5sf0pr12min (07:58-08:10)
+- Prepare to Take Bath - 2min (07:58-08:00)
+- Cold Bath - 10min (08:01-08:11)
 
-## Plan the Work Week (08:11-08:42)
-### !Work Week Planning - 1sp0sf0pr25min (08:11-08:36)
-- Past Work Week Reporting - 5min (08:11-08:16)
-- Rate the Past Work Week - 5min (08:17-08:22)
-- Review Plans and Tasks - 10min (08:23-08:33)
-- Write the Plan - 5min (08:34-08:39)
+## Morning Work (08:16-11:59)
+### Work Day Planning - 5sp0sf10pr15min (08:16-08:31)
+- Analyze Tasks - 5min (08:16-08:21)
+- Review Past Plan - 5min (08:22-08:27)
+- Write the plan - 5min (08:28-08:33)
+### !Morning Work - 5sp0sf30pr200min (08:36-11:56)
+- Work Smart - 200min (08:36-11:56)
 
-## Waking the body (08:44-09:30)
-### Morning Exercises - 0sp5sf0pr26min (08:44-09:10)
-- Warm Up - 6min (08:44-08:50)
-- Calisthenics - 20min (08:51-09:11)
-### Morning Bath - 0sp5sf0pr12min (09:14-09:26)
-- Prepare to Take Bath - 2min (09:14-09:16)
-- Cold Bath - 10min (09:17-09:27)
+## Plan the Month (12:01-12:47)
+### !Monthly Planning - 1sp3sf0pr40min (12:01-12:41)
+- Past Month Reporting - 10min (12:01-12:11)
+- Rate the Past Month - 5min (12:12-12:17)
+- Check Tasks - 10min (12:18-12:28)
+- Write the Plan - 15min (12:29-12:44)
 
-## Third Refection (09:32-10:27)
-### Light Lunch - 3sp1sf0pr33min (09:32-10:05)
-- Prepare Food - 25min (09:32-09:57)
-- Eat - 8min (09:58-10:06)
-### !Help Digestion - 3sp0sf0pr15min (10:09-10:24)
-- Light Exercises - 15min (10:09-10:24)
+## Third Refection (12:49-13:44)
+### Light Lunch - 3sp1sf0pr33min (12:49-13:22)
+- Prepare Food - 25min (12:49-13:14)
+- Eat - 8min (13:15-13:23)
+### !Help Digestion - 3sp0sf0pr15min (13:26-13:41)
+- Light Exercises - 15min (13:26-13:41)
 
-## Stop the work (10:29-11:12)
-### Last Refection - 0sp5sf0pr23min (10:29-10:52)
-- Prepare the Food - 15min (10:29-10:44)
-- Eat - 8min (10:45-10:53)
-### !Last bath - 0sp2sf0pr12min (10:56-11:08)
-- Prepare to Take Bath - 2min (10:56-10:58)
-- Take Bath - 10min (10:59-11:09)
+## Afternoon Work (13:46-16:40)
+### Afternoon Work - 5sp0sf20pr160min (13:46-16:26)
+- Work Smarter - 160min (13:46-16:26)
+### Finish the Work Day - 0sp0sf0pr7min (16:29-16:36)
+- Write Summary - 2min (16:29-16:31)
+- Finish the Report - 5min (16:32-16:37)
 
-## Learn (11:14-12:17)
-### Learning New Things - 2sp0sf0pr60min (11:14-12:14)
-- Study New Information - 60min (11:14-12:14)
+## Stop the work (16:42-17:25)
+### Last Refection - 0sp5sf0pr23min (16:42-17:05)
+- Prepare the Food - 15min (16:42-16:57)
+- Eat - 8min (16:58-17:06)
+### !Last bath - 0sp2sf0pr12min (17:09-17:21)
+- Prepare to Take Bath - 2min (17:09-17:11)
+- Take Bath - 10min (17:12-17:22)
 
-## Shutting down (12:19-12:56)
-### Finish the Day - 0sp0sf0pr10min (12:19-12:29)
-- Finish the Personal Report - 10min (12:19-12:29)
-### Review Routine - 0sp0sf0pr15min (12:32-12:47)
-- Improve and review the routine - 15min (12:32-12:47)
-### Patch timetome - 0sp0sf0pr3min (12:50-12:53)
-- Patch it with Termux script - 3min (12:50-12:53)
+## Shutting down (17:27-18:04)
+### Finish the Day - 0sp0sf0pr10min (17:27-17:37)
+- Finish the Personal Report - 10min (17:27-17:37)
+### Review Routine - 0sp0sf0pr15min (17:40-17:55)
+- Improve and review the routine - 15min (17:40-17:55)
+### Patch timetome - 0sp0sf0pr3min (17:58-18:01)
+- Patch it with Termux script - 3min (17:58-18:01)
 #+end_example
 ** Represent Unplanned Tasks
 #+begin_src bash :exports both :results pp
-routineParser representUnplanned -r example.yaml
+routineParser representUnplanned -r example.yaml --today 2024-10-01
 #+end_src
 
 #+RESULTS:
@@ -155,7 +175,7 @@ routineParser representUnplanned -r example.yaml
 #+begin_src bash :exports both :results raw
 echo "#+begin_src mermaid :file example.svg"
 echo "%%{init: { 'theme': 'dark' } }%%"
-routineParser ganttChart -r example.yaml
+routineParser ganttChart -r example.yaml --today 2024-10-01
 echo "#+end_src"
 #+end_src
 
@@ -163,7 +183,7 @@ echo "#+end_src"
 #+begin_src mermaid :file example.svg
 %%{init: { 'theme': 'dark' } }%%
 gantt
-  title Routine for 2024-10-05 (0.1.0)
+  title Routine for 2024-10-01 (0.1.0)
   dateFormat HH:mm
   axisFormat %H:%M
 
@@ -173,34 +193,36 @@ gantt
   06.00-06.10 Exit Bedroom - 0sp0sf0pr10min : 06:00, 10m
   06.16-06.47 Breakfast - 0sp2sf0pr31min : 06:16, 31m
 
-  section Plan the Week
-  06.54-07.29 !Weekly Planning - 1sp1sf0pr35min : 06:54, 35m
-
   section Plan Personal Day
-  07.37-08.02 Personal Day Planning - 1sp0sf-300pr25min : 07:37, 25m
-
-  section Plan the Work Week
-  08.11-08.36 !Work Week Planning - 1sp0sf0pr25min : 08:11, 25m
+  06.54-07.19 Personal Day Planning - 1sp0sf-300pr25min : 06:54, 25m
 
   section Waking the body
-  08.44-09.10 Morning Exercises - 0sp5sf0pr26min : 08:44, 26m
-  09.14-09.26 Morning Bath - 0sp5sf0pr12min : 09:14, 12m
+  07.28-07.54 Morning Exercises - 0sp5sf0pr26min : 07:28, 26m
+  07.58-08.10 Morning Bath - 0sp5sf0pr12min : 07:58, 12m
+
+  section Morning Work
+  08.16-08.31 Work Day Planning - 5sp0sf10pr15min : 08:16, 15m
+  08.36-11.56 !Morning Work - 5sp0sf30pr200min : 08:36, 200m
+
+  section Plan the Month
+  12.01-12.41 !Monthly Planning - 1sp3sf0pr40min : 12:01, 40m
 
   section Third Refection
-  09.32-10.05 Light Lunch - 3sp1sf0pr33min : 09:32, 33m
-  10.09-10.24 !Help Digestion - 3sp0sf0pr15min : 10:09, 15m
+  12.49-13.22 Light Lunch - 3sp1sf0pr33min : 12:49, 33m
+  13.26-13.41 !Help Digestion - 3sp0sf0pr15min : 13:26, 15m
+
+  section Afternoon Work
+  13.46-16.26 Afternoon Work - 5sp0sf20pr160min : 13:46, 160m
+  16.29-16.36 Finish the Work Day - 0sp0sf0pr7min : 16:29, 7m
 
   section Stop the work
-  10.29-10.52 Last Refection - 0sp5sf0pr23min : 10:29, 23m
-  10.56-11.08 !Last bath - 0sp2sf0pr12min : 10:56, 12m
-
-  section Learn
-  11.14-12.14 Learning New Things - 2sp0sf0pr60min : 11:14, 60m
+  16.42-17.05 Last Refection - 0sp5sf0pr23min : 16:42, 23m
+  17.09-17.21 !Last bath - 0sp2sf0pr12min : 17:09, 12m
 
   section Shutting down
-  12.19-12.29 Finish the Day - 0sp0sf0pr10min : 12:19, 10m
-  12.32-12.47 Review Routine - 0sp0sf0pr15min : 12:32, 15m
-  12.50-12.53 Patch timetome - 0sp0sf0pr3min : 12:50, 3m
+  17.27-17.37 Finish the Day - 0sp0sf0pr10min : 17:27, 10m
+  17.40-17.55 Review Routine - 0sp0sf0pr15min : 17:40, 15m
+  17.58-18.01 Patch timetome - 0sp0sf0pr3min : 17:58, 3m
 
   Day End : milestone, m2, 21:30, 2m
 #+end_src

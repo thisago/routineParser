@@ -8,6 +8,7 @@
 - Added billing to your hours
   - You can pay or earn! Define the expected earnings and transactions over your day and even how much billable hours you expect.
   - Added a option to disable billing to specific days
+  - Added expected worked hour cost config
 - Added unplanned tasks support
 - Added static timeto.me ids based on task name and activity
 
