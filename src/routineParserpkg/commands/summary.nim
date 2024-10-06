@@ -9,7 +9,7 @@ proc summaryCommand*(
   valid: bool;
   rawNeededHours, realNeededHours, dayHours: float,
   totalStoryPoints, totalSatisfaction: int,
-  totalPositiveBilled, totalNegativeBilled, totalBilled, totalBalance, totalBilledHours: float,
+  totalPositiveBilled, totalNegativeBilled, totalBilled, totalBalance, totalBilledHours, totalPositiveBilledHours, totalNegativeBilledHours: float,
 ] =
   ## Checks if routine is not larger than day
   let
@@ -35,6 +35,8 @@ proc summaryCommand*(
   result.totalBilled = billed.positive - billed.negative
   result.totalBalance = billed.positive + billed.negative
   result.totalBilledHours = billed.hours
+  result.totalNegativeBilledHours = billed.negativeHours
+  result.totalPositiveBilledHours = billed.positiveHours
 
   result.valid = result.realNeededHours <= result.dayHours and
                  result.totalStoryPoints <= routine.config.prerequisites.maxStoryPoints.get and
