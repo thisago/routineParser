@@ -117,7 +117,7 @@ func totalSatisfaction*(blocks: seq[RoutineBlock]): int =
     for task in blk.tasks:
       result += task.satisfaction.get
 
-func billable*(blocks: seq[RoutineBlock]): tuple[positive, negative, hours: float] =
+func billable*(blocks: seq[RoutineBlock]): tuple[positive, negative, positiveHours, negativeHours, hours: float] =
   ## Sums all routine `satisfaction`
   for blk in blocks:
     for task in blk.tasks:
@@ -129,8 +129,10 @@ func billable*(blocks: seq[RoutineBlock]): tuple[positive, negative, hours: floa
         result.hours += hours
         if price > 0:
           result.positive += price
+          result.positiveHours += hours
         elif price < 0:
           result.negative += price
+          result.negativeHours += hours
 
 func repr*(task: RoutineBlockTask): string =
   let taskDur = task.duration(RoutineConfigTolerance())
