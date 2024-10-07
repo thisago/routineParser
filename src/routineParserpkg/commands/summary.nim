@@ -39,7 +39,7 @@ proc summaryCommand*(
   result.totalBilledHours = billed.hours
   result.totalNegativeBilledHours = billed.negativeHours
   result.totalPositiveBilledHours = billed.positiveHours
-  result.minAverageHourPrice = result.totalBilled / billed.hours
+  result.minAverageHourPrice = if result.totalBilled > 0: result.totalBilled / billed.hours else: 0.0
 
   result.valid = result.realNeededHours <= result.dayHours and
                  result.totalStoryPoints <= routine.config.prerequisites.maxStoryPoints.get and
