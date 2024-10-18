@@ -35,7 +35,6 @@ type
     name*: string
     repeat* {.defaultVal: {Everyday}.some.}: Option[set[RoutineBlockRepetition]] = {Everyday}.some
     tasks*: seq[RoutineBlockTask]
-    perfectness*: Option[float]
 
   RoutineBlockTask* {.sparse.} = object
     name*: string
@@ -44,6 +43,7 @@ type
     storyPoints*, satisfaction*: Option[int]
     price*: Option[float]
     actions*: seq[RoutineBlockTaskAction]
+    perfectness*: Option[float]
 
   RoutineBlockTaskAction* = object
     name*: string
