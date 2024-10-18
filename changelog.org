@@ -1,6 +1,8 @@
 #+title: Changelog
 
 * Version 0.4.0 (Oct 2024)
+- Added unused prop: =blocks.[].perfectness= for self analysis
+- Fixed timeto.me repeatings id generation (removes seed generated ids)
 - Optional YAML props
 - Better Markdown representation
 - Satisfaction level instead of "energy back"
