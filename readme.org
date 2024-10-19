@@ -5,6 +5,9 @@
 #+title: Routine Parser
 
 * Help
+:PROPERTIES:
+:VISIBILITY: folded
+:END:
 #+begin_src bash :exports result :results pp
 routineParser help
 #+end_src
@@ -60,6 +63,9 @@ where subcommand syntaxes are as follows:
 
 
 * Example
+:PROPERTIES:
+:VISIBILITY: content
+:END:
 ** Summary
 #+begin_src bash :exports both :results pp
 echo -n "- "
