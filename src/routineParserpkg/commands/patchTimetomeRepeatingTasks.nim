@@ -14,7 +14,7 @@ proc patchTimetomeRepeatingTasksCommand*(
   let routine = loadConfig routineYaml
   var timetome = parseJson readFile timetomeJson
   let activities = timetome.activities
-  let today = if today.len > 0: today.parse("yyyy-MM-dd") else: now()
+  let todayDt = if today.len > 0: today.parse("yyyy-MM-dd") else: now()
 
   var repeatingTasks: seq[TtmRepeatingTask]
 
@@ -23,24 +23,25 @@ proc patchTimetomeRepeatingTasksCommand*(
   var time = realDayStart.toDuration
 
   for blk in routine.blocks:
-    if blk.repeat.get.isForToday today:
+    if blk.repeat.get.isForToday todayDt:
       for task in blk.tasks:
-        var
-          taskDuration = initDuration(hours = 0)
-          taskTolerance = initDuration(hours = 0)
-        for action in task.actions:
-          taskDuration += action.duration.toDuration
-          taskTolerance += routine.config.tolerance.betweenActions.get.toDuration
-        repeatingTasks.add initTtmRepeatingTask(
-          name = task.repr,
-          duration = taskDuration,
-          activityId = activities[task.timetome.get],
-          scheduled = time,
-          important = task.important.get
-        )
-        time += taskDuration
-        time += taskTolerance
-        time += routine.config.tolerance.betweenTasks.get.toDuration
+        if task.repeat.get.isForToday todayDt:
+          var
+            taskDuration = initDuration(hours = 0)
+            taskTolerance = initDuration(hours = 0)
+          for action in task.actions:
+            taskDuration += action.duration.toDuration
+            taskTolerance += routine.config.tolerance.betweenActions.get.toDuration
+          repeatingTasks.add initTtmRepeatingTask(
+            name = task.repr,
+            duration = taskDuration,
+            activityId = activities[task.timetome.get],
+            scheduled = time,
+            important = task.important.get
+          )
+          time += taskDuration
+          time += taskTolerance
+          time += routine.config.tolerance.betweenTasks.get.toDuration
       time += routine.config.tolerance.betweenBlocks.get.toDuration
 
   for task in routine.unplannedTasks:

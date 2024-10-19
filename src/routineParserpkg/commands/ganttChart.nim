@@ -37,22 +37,23 @@ proc ganttChartCommand*(
       let blockStart = time
       var tasksResult = ""
       for task in blk.tasks:
-        let
-          taskStart = time
-          taskDuration = task.duration(RoutineConfigTolerance())
-          taskDurationMin = taskDuration.inMinutes
-          timeEnd = time + taskDuration
-          readableTime = fmt"{time.hr}-{timeEnd.hr}".replace(":", ".")
-        tasksResult.add fmt"  {readableTime} "
-        tasksResult.add fmt"{task.repr} : {hr time}, {taskDurationMin}m" & "\l"
+        if task.repeat.get.isForToday todayDt:
+          let
+            taskStart = time
+            taskDuration = task.duration(RoutineConfigTolerance())
+            taskDurationMin = taskDuration.inMinutes
+            timeEnd = time + taskDuration
+            readableTime = fmt"{time.hr}-{timeEnd.hr}".replace(":", ".")
+          tasksResult.add fmt"  {readableTime} "
+          tasksResult.add fmt"{task.repr} : {hr time}, {taskDurationMin}m" & "\l"
 
-        var actionsResult = ""
-        for action in task.actions:
-          let actionStart = time
-          time += action.duration.toDuration
-          time += toleranceBetweenActions
-        tasksResult.add actionsResult
-        time += toleranceBetweenTasks
+          var actionsResult = ""
+          for action in task.actions:
+            let actionStart = time
+            time += action.duration.toDuration
+            time += toleranceBetweenActions
+          tasksResult.add actionsResult
+          time += toleranceBetweenTasks
 
       result.add "\l" & fmt"  section {blk.name}" & "\l" # ({hr blockStart}-{hr time})" & "\l"
       result.add tasksResult

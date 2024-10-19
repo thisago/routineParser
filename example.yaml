@@ -29,7 +29,6 @@ blocks:
             duration: 1min
           - name: "Make the Bed"
             duration: 3min
-
       - name: "Breakfast"
         timetome: "Getting Started"
         important: false
@@ -41,6 +40,15 @@ blocks:
             duration: 20min
           - name: "Eat"
             duration: 6min
+      - name: "Walk at morning"
+        timetome: "Exercises"
+        satisfaction: 3
+        repeat: [Sunday]
+        actions:
+          - name: "Put sneakers"
+            duration: 5min
+          - name: "Walk across the fields"
+            duration: 40min
 
   - name: "Plan the Week"
     repeat: [Weekends]

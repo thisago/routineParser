@@ -44,6 +44,7 @@ type
     price*: Option[float]
     actions*: seq[RoutineBlockTaskAction]
     perfectness*: Option[float]
+    repeat* {.defaultVal: {Everyday}.some.}: Option[set[RoutineBlockRepetition]] = {Everyday}.some
 
   RoutineBlockTaskAction* = object
     name*: string

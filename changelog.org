@@ -1,6 +1,7 @@
 #+title: Changelog
 
 * Version 0.4.0 (Oct 2024)
+- Add tasks =repeat= rules
 - Added unused prop: =blocks.[].tasks.[].perfectness= for self analysis
 - Fixed timeto.me repeatings id generation (removes seed generated ids)
 - Optional YAML props

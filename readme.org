@@ -232,3 +232,11 @@ gantt
 
   Day End : milestone, m2, 21:30, 2m
 #+end_src
+
+
+
+* Tasks and TO-DO
+- Complete refactor
+  - Separate entities from config
+  - Move business logic to entities
+  - Remove utils module
