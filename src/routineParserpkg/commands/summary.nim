@@ -26,8 +26,8 @@ proc summaryCommand*(
       blocks.add blk
 
   result.dayHours = dayDuration.toHours
-  result.rawNeededHours = toHours blocks.duration RoutineConfigTolerance()
-  result.realNeededHours = toHours blocks.duration routine.config.tolerance
+  result.rawNeededHours = toHours blocks.duration(routine.config.tolerance, today)
+  result.realNeededHours = toHours blocks.duration(routine.config.tolerance, today)
   result.totalStoryPoints = blocks.totalStoryPoints
   result.totalSatisfaction = blocks.totalSatisfaction
 
