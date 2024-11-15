@@ -1,5 +1,8 @@
 #+title: Changelog
 
+* Version 0.4.1 (Nov 15 2024)
+- Fixed summary total time by skipping tasks for other days
+
 * Version 0.4.0 (Oct 2024)
 - Add tasks =repeat= rules
 - Added unused prop: =blocks.[].tasks.[].perfectness= for self analysis

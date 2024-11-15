@@ -53,28 +53,6 @@ func toDuration*(hours: float): Duration =
   let t = hours.splitHours
   initDuration(hours = t.hours, minutes = t.minutes)
 
-
-func duration*(task: RoutineBlockTask; tolerances: RoutineConfigTolerance): Duration =
-  let toleranceBetweenActions = tolerances.betweenActions.get.toDuration
-  for action in task.actions:
-    result += action.duration.toDuration
-    result += toleranceBetweenActions
-
-func duration*(blk: RoutineBlock; tolerances: RoutineConfigTolerance): Duration =
-  let toleranceBetweenTasks = tolerances.betweenTasks.get.toDuration
-  for task in blk.tasks:
-    result += task.duration tolerances
-    result += toleranceBetweenTasks
-
-func duration*(
-  blocks: seq[RoutineBlock];
-  tolerances: RoutineConfigTolerance
-): Duration =
-  let toleranceBetweenBlocks = tolerances.betweenBlocks.get.toDuration
-  for blk in blocks:
-    result += blk.duration tolerances
-    result += toleranceBetweenBlocks
-
 func weekday(dt: DateTime): WeekDay =
   getDayOfWeek(dt.monthday, dt.month, dt.year)
 
@@ -104,6 +82,30 @@ func isForToday*(repeat: set[RoutineBlockRepetition]; dt: DateTime): bool =
   for item in repeat:
     if item.isForToday dt:
       return true
+
+func duration*(task: RoutineBlockTask; tolerances: RoutineConfigTolerance): Duration =
+  let toleranceBetweenActions = tolerances.betweenActions.get.toDuration
+  for action in task.actions:
+    result += action.duration.toDuration
+    result += toleranceBetweenActions
+
+func duration*(blk: RoutineBlock; tolerances: RoutineConfigTolerance; today = now()): Duration =
+  let toleranceBetweenTasks = tolerances.betweenTasks.get.toDuration
+  for task in blk.tasks:
+    if task.repeat.get.isForToday today:
+      result += task.duration tolerances
+      result += toleranceBetweenTasks
+
+func duration*(
+  blocks: seq[RoutineBlock];
+  tolerances: RoutineConfigTolerance;
+  today = now()
+): Duration =
+  let toleranceBetweenBlocks = tolerances.betweenBlocks.get.toDuration
+  for blk in blocks:
+    if blk.repeat.get.isForToday today:
+       result += blk.duration(tolerances, today)
+       result += toleranceBetweenBlocks
 
 func totalStoryPoints*(blocks: seq[RoutineBlock]): int =
   ## Sums all routine storypoints
