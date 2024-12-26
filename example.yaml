@@ -10,6 +10,7 @@ config:
     minBilled: 200 # total of hour prices of the day, including negative values
     minBilledHours: 50 # total billable hours of the day
     minSatisfaction: 10
+  nonWorkDays: [Saturday, Sunday]
   tolerance:
     betweenBlocks: 2min
     betweenTasks: 2min

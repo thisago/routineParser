@@ -1,6 +1,6 @@
 # Package
 
-version       = "0.4.1"
+version       = "0.5.0"
 author        = "thisago"
 description   = "Smart human routines as YAML"
 license       = "MIT"
