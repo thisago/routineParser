@@ -30,6 +30,9 @@ blocks:
             duration: 1min
           - name: "Make the Bed"
             duration: 3min
+          - name: "Meditate a little"
+            duration: 10min
+            repeat: [Saturday]
       - name: "Breakfast"
         timetome: "Getting Started"
         important: false

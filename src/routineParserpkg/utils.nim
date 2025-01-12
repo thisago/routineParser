@@ -83,20 +83,21 @@ func isForToday*(repeat: set[RoutineBlockRepetition]; dt: DateTime): bool =
     if item.isForToday dt:
       return true
 
-func duration*(task: RoutineBlockTask; tolerances: RoutineConfigTolerance): Duration =
+proc duration*(task: RoutineBlockTask; tolerances: RoutineConfigTolerance; today = now()): Duration =
   let toleranceBetweenActions = tolerances.betweenActions.get.toDuration
   for action in task.actions:
-    result += action.duration.toDuration
-    result += toleranceBetweenActions
+    if action.repeat.get.isForToday today:
+      result += action.duration.toDuration
+      result += toleranceBetweenActions
 
-func duration*(blk: RoutineBlock; tolerances: RoutineConfigTolerance; today = now()): Duration =
+proc duration*(blk: RoutineBlock; tolerances: RoutineConfigTolerance; today = now()): Duration =
   let toleranceBetweenTasks = tolerances.betweenTasks.get.toDuration
   for task in blk.tasks:
     if task.repeat.get.isForToday today:
-      result += task.duration tolerances
+      result += task.duration(tolerances, today)
       result += toleranceBetweenTasks
 
-func duration*(
+proc duration*(
   blocks: seq[RoutineBlock];
   tolerances: RoutineConfigTolerance;
   today = now()
@@ -119,7 +120,7 @@ func totalSatisfaction*(blocks: seq[RoutineBlock]): int =
     for task in blk.tasks:
       result += task.satisfaction.get
 
-func billable*(blocks: seq[RoutineBlock]): tuple[positive, negative, positiveHours, negativeHours, hours: float] =
+proc billable*(blocks: seq[RoutineBlock]): tuple[positive, negative, positiveHours, negativeHours, hours: float] =
   ## Sums all routine `satisfaction`
   for blk in blocks:
     for task in blk.tasks:
@@ -136,8 +137,8 @@ func billable*(blocks: seq[RoutineBlock]): tuple[positive, negative, positiveHou
           result.negative += price
           result.negativeHours += hours
 
-func repr*(task: RoutineBlockTask): string =
-  let taskDur = task.duration(RoutineConfigTolerance())
+proc repr*(task: RoutineBlockTask; today = now()): string =
+  let taskDur = task.duration(RoutineConfigTolerance(), today)
 
   if task.important.get:
     result = "!"

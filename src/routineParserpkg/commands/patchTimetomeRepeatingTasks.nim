@@ -30,8 +30,9 @@ proc patchTimetomeRepeatingTasksCommand*(
             taskDuration = initDuration(hours = 0)
             taskTolerance = initDuration(hours = 0)
           for action in task.actions:
-            taskDuration += action.duration.toDuration
-            taskTolerance += routine.config.tolerance.betweenActions.get.toDuration
+            if action.repeat.get.isForToday todayDt:
+              taskDuration += action.duration.toDuration
+              taskTolerance += routine.config.tolerance.betweenActions.get.toDuration
           repeatingTasks.add initTtmRepeatingTask(
             name = task.repr,
             duration = taskDuration,

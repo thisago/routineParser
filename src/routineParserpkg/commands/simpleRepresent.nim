@@ -42,13 +42,14 @@ proc simpleRepresentCommand*(
         if task.repeat.get.isForToday today:
           let
             taskStart = time
-            taskDuration = task.duration(RoutineConfigTolerance())
+            taskDuration = task.duration(RoutineConfigTolerance(), today)
             timeEnd = time + taskDuration
           var actionsResult: seq[string]
           for action in task.actions:
-            actionsResult.add action.name
-            time += action.duration.toDuration
-            time += toleranceBetweenActions
+            if action.repeat.get.isForToday today:
+              actionsResult.add action.name
+              time += action.duration.toDuration
+              time += toleranceBetweenActions
           tasksResult.add "\l" & fmt"  - {task.name} (~{hr taskStart}-{hr timeEnd})" & "\l"
           tasksResult.add "    - Tasks: " & actionsResult.join ", "
           time += toleranceBetweenTasks

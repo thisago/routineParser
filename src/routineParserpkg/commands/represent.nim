@@ -39,22 +39,23 @@ proc representCommand*(
         if task.repeat.get.isForToday today:
           let
             taskStart = time
-            taskDuration = task.duration(RoutineConfigTolerance())
+            taskDuration = task.duration(RoutineConfigTolerance(), today)
             timeEnd = time + taskDuration
           var actionsResult = ""
           for action in task.actions:
-            var nextTime = time
-            let actionStart = time
-            nextTime += action.duration.toDuration
-            actionsResult.add "- "
-            if highlightAction and nowDur > time and nowDur < nextTime:
-              actionsResult.add fmt"**{action.name}**"
-            else:
-              actionsResult.add action.name
-            actionsResult.add fmt" - {action.duration} ({hr actionStart}-{hr nextTime})" & " \l"
-            nextTime += toleranceBetweenActions
-            time = nextTime
-          tasksResult.add fmt"### {task.repr} ({hr taskStart}-{hr timeEnd})" & "\l"
+            if action.repeat.get.isForToday today:
+              var nextTime = time
+              let actionStart = time
+              nextTime += action.duration.toDuration
+              actionsResult.add "- "
+              if highlightAction and nowDur > time and nowDur < nextTime:
+                actionsResult.add fmt"**{action.name}**"
+              else:
+                actionsResult.add action.name
+              actionsResult.add fmt" - {action.duration} ({hr actionStart}-{hr nextTime})" & " \l"
+              nextTime += toleranceBetweenActions
+              time = nextTime
+          tasksResult.add fmt"### {task.repr today} ({hr taskStart}-{hr timeEnd})" & "\l"
           tasksResult.add actionsResult
           time += toleranceBetweenTasks
       result.add "\l" & fmt"## {blk.name} ({hr blockStart}-{hr time})" & "\l"

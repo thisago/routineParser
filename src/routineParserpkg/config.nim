@@ -49,6 +49,7 @@ type
   RoutineBlockTaskAction* = object
     name*: string
     duration*: string
+    repeat* {.defaultVal: {Everyday}.some.}: Option[set[RoutineBlockRepetition]] = {Everyday}.some
 
 
   UnplannedTask* {.sparse.} = object

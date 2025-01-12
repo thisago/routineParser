@@ -40,18 +40,19 @@ proc ganttChartCommand*(
         if task.repeat.get.isForToday todayDt:
           let
             taskStart = time
-            taskDuration = task.duration(RoutineConfigTolerance())
+            taskDuration = task.duration(RoutineConfigTolerance(), todayDt)
             taskDurationMin = taskDuration.inMinutes
             timeEnd = time + taskDuration
             readableTime = fmt"{time.hr}-{timeEnd.hr}".replace(":", ".")
           tasksResult.add fmt"  {readableTime} "
-          tasksResult.add fmt"{task.repr} : {hr time}, {taskDurationMin}m" & "\l"
+          tasksResult.add fmt"{task.repr todayDt} : {hr time}, {taskDurationMin}m" & "\l"
 
           var actionsResult = ""
           for action in task.actions:
-            let actionStart = time
-            time += action.duration.toDuration
-            time += toleranceBetweenActions
+            if action.repeat.get.isForToday todayDt:
+              let actionStart = time
+              time += action.duration.toDuration
+              time += toleranceBetweenActions
           tasksResult.add actionsResult
           time += toleranceBetweenTasks
 

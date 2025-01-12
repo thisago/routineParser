@@ -79,7 +79,7 @@ routineParser summary -r example.yaml --today 2024-10-01 | sed 's/[\(\)]//g' | s
 - realNeededHours: 12.1
 - dayHours: 15.5
 - totalStoryPoints: 23
-- totalSatisfaction: 23
+- totalSatisfaction: 26
 - totalPositiveBilled: 155.8333333333333
 - totalNegativeBilled: -125.0
 - totalBilled: 280.8333333333333
