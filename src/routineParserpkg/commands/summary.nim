@@ -31,7 +31,7 @@ proc summaryCommand*(
   result.totalStoryPoints = blocks.totalStoryPoints
   result.totalSatisfaction = blocks.totalSatisfaction
 
-  let billed = blocks.billable
+  let billed = blocks.billable today
   result.totalPositiveBilled = billed.positive
   result.totalNegativeBilled = billed.negative
   result.totalBilled = billed.positive - billed.negative
