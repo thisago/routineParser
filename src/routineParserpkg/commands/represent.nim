@@ -59,6 +59,8 @@ proc representCommand*(
           tasksResult.add actionsResult
           time += toleranceBetweenTasks
       result.add "\l" & fmt"## {blk.name} ({hr blockStart}-{hr time})" & "\l"
+      if blk.description.get.len > 0:
+        result.add blk.description.get & "\l"
       result.add tasksResult
       time += toleranceBetweenBlocks
 

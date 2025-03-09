@@ -35,6 +35,7 @@ type
     name*: string
     repeat* {.defaultVal: {Everyday}.some.}: Option[set[RoutineBlockRepetition]] = {Everyday}.some
     tasks*: seq[RoutineBlockTask]
+    description*: Option[string]
 
   RoutineBlockTask* {.sparse.} = object
     name*: string

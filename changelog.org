@@ -1,5 +1,8 @@
 #+title: Changelog
 
+* Version 0.6.1 (Mar 9 2025)
+- Add optional =description= to time-blocks.
+
 * Version 0.6.0 (Jan 12 2025)
 - Add =repeat= rules for task actions
 
