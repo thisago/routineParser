@@ -240,3 +240,45 @@ gantt
   - Separate entities from config
   - Move business logic to entities
   - Remove utils module
+
+* COMMENT Idealization :noexport:
+** Static block hours
+Instead of just calculating the time by summing things together, support static definitions and stretch things around them.
+
+Example:
+#+begin_src yaml
+
+blocks:
+  - name: "Getting Started"
+    tasks:
+      # ...
+      - name: "Walk at morning"
+        timetome: "Exercises"
+        satisfaction: 3
+        repeat: [Sunday]
+        actions:
+          - name: "Put sneakers"
+            duration: 5min
+          - name: "Walk across the fields"
+            duration: 40min # minimum
+            stretch: true
+
+  - name: "Plan the Week"
+    at: 06:00 # 6am
+    repeat: [Weekends]
+    tasks:
+      - name: "Weekly Planning"
+        timetome: "Plan"
+        important: true
+        storyPoints: 1
+        satisfaction: 1
+        actions:
+          - name: "Past Week Reporting"
+            duration: 5min
+          - name: "Rate the Past Week"
+            duration: 5min
+          - name: "Review Plans and Tasks"
+            duration: 15min
+          - name: "Write the Plan"
+            duration: 10min
+#+end_src
