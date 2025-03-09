@@ -240,6 +240,7 @@ gantt
   - Separate entities from config
   - Move business logic to entities
   - Remove utils module
+  - *Do not duplicate logic at each command*
 
 * COMMENT Idealization :noexport:
 ** Static block hours
