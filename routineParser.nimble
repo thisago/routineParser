@@ -1,6 +1,6 @@
 # Package
 
-version       = "0.6.1"
+version       = "0.6.2"
 author        = "thisago"
 description   = "Smart human routines as YAML"
 license       = "MIT"
@@ -15,4 +15,6 @@ binDir = "build"
 requires "nim >= 1.6.4"
 
 requires "yaml"
-requires "cligen"
+
+when isMainModule:
+   requires "cligen"

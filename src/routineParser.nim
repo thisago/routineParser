@@ -30,3 +30,6 @@ when isMainModule:
     simpleRepresentCommand,
     cmdName = "simpleRepresent",
   ])
+else:
+  import routineParserpkg/config
+  export config

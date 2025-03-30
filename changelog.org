@@ -1,5 +1,8 @@
 #+title: Changelog
 
+* Version 0.6.2 (Mar 30 2025)
+- Export =config= types when imported as a module
+
 * Version 0.6.1 (Mar 9 2025)
 - Add optional =description= to time-blocks.
 
