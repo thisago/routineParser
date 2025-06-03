@@ -123,19 +123,21 @@ func totalSatisfaction*(blocks: seq[RoutineBlock]): int =
 proc billable*(blocks: seq[RoutineBlock]; today = now()): tuple[positive, negative, positiveHours, negativeHours, hours: float] =
   ## Sums all routine `satisfaction`
   for blk in blocks:
-    for task in blk.tasks:
-      let
-        duration = task.duration(RoutineConfigTolerance(), today)
-        hours = duration.inMinutes / 60
-        price = task.price.get * hours
-      if price != 0:
-        result.hours += hours
-        if price > 0:
-          result.positive += price
-          result.positiveHours += hours
-        elif price < 0:
-          result.negative += price
-          result.negativeHours += hours
+    if blk.repeat.get.isForToday today:
+      for task in blk.tasks:
+        if task.repeat.get.isForToday today:
+          let
+            duration = task.duration(RoutineConfigTolerance(), today)
+            hours = duration.inMinutes / 60
+            price = task.price.get * hours
+          if price != 0:
+            result.hours += hours
+            if price > 0:
+              result.positive += price
+              result.positiveHours += hours
+            elif price < 0:
+              result.negative += price
+              result.negativeHours += hours
 
 proc repr*(task: RoutineBlockTask; today = now()): string =
   let taskDur = task.duration(RoutineConfigTolerance(), today)
