@@ -1,5 +1,8 @@
 #+title: Changelog
 
+* Version 0.6.4 (June 5 2025)
+- Fix ~duration~ summing: Last block shouldn't add the tolerance.
+
 * Version 0.6.3 (June 3 2025)
 - Fix summary ~billable~ summing to skip things that are not for today.
 

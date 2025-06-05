@@ -85,17 +85,17 @@ func isForToday*(repeat: set[RoutineBlockRepetition]; dt: DateTime): bool =
 
 proc duration*(task: RoutineBlockTask; tolerances: RoutineConfigTolerance; today = now()): Duration =
   let toleranceBetweenActions = tolerances.betweenActions.get.toDuration
-  for action in task.actions:
+  result += toleranceBetweenActions * task.actions.len
+  for i, action in task.actions:
     if action.repeat.get.isForToday today:
       result += action.duration.toDuration
-      result += toleranceBetweenActions
 
 proc duration*(blk: RoutineBlock; tolerances: RoutineConfigTolerance; today = now()): Duration =
   let toleranceBetweenTasks = tolerances.betweenTasks.get.toDuration
-  for task in blk.tasks:
+  result += toleranceBetweenTasks * blk.tasks.len
+  for i, task in blk.tasks:
     if task.repeat.get.isForToday today:
       result += task.duration(tolerances, today)
-      result += toleranceBetweenTasks
 
 proc duration*(
   blocks: seq[RoutineBlock];
@@ -103,10 +103,10 @@ proc duration*(
   today = now()
 ): Duration =
   let toleranceBetweenBlocks = tolerances.betweenBlocks.get.toDuration
-  for blk in blocks:
+  result += toleranceBetweenBlocks * (blocks.len - 1)
+  for i, blk in blocks:
     if blk.repeat.get.isForToday today:
-       result += blk.duration(tolerances, today)
-       result += toleranceBetweenBlocks
+      result += blk.duration(tolerances, today)
 
 func totalStoryPoints*(blocks: seq[RoutineBlock]): int =
   ## Sums all routine storypoints
