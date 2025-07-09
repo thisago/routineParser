@@ -9,7 +9,7 @@
 :PROPERTIES:
 :VISIBILITY: folded
 :END:
-#+begin_src bash :exports result :results pp
+#+begin_src bash :exports both :results pp
 routineParser help
 #+end_src
 
