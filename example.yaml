@@ -1,17 +1,17 @@
-version: 0.1.0
+version: 0.1.0 # Representational version, used at Gantt chart
 
 config:
   dayStart: 06:00
-  dayEnd: 21:30
+  dayEnd: 21:30 # exceed this hour means invalid routine
   prerequisites:
-    maxStoryPoints: 30
+    maxStoryPoints: 30 # over-engineering test, can be omitted both here and on tasks
     minBalance: 30 # final balance of the day, the earned money
-    minAverageHourPrice: 30 # the ideal price of your average billable hour
+    minAverageHourPrice: 90 # the ideal price of your average billable hour
     minBilled: 200 # total of hour prices of the day, including negative values
-    minBilledHours: 50 # total billable hours of the day
-    minSatisfaction: 10
-  nonWorkDays: [Saturday, Sunday]
-  tolerance:
+    minBilledHours: 6 # total billable hours of the day
+    minSatisfaction: 10 # another test, can be omited
+  nonWorkDays: [Saturday, Sunday] # do not require billing and work enforcements these days
+  tolerance: # time margins between blocks, tasks and actions
     betweenBlocks: 2min
     betweenTasks: 2min
     betweenActions: 1min
@@ -79,7 +79,6 @@ blocks:
         timetome: "Plan"
         important: false
         storyPoints: 1
-        price: -300
         actions:
           - name: "Yesterday Backtrack"
             duration: 5min
@@ -99,6 +98,7 @@ blocks:
         timetome: "Plan"
         important: true
         storyPoints: 1
+        price: 100
         actions:
           - name: "Past Work Week Reporting"
             duration: 5min
@@ -140,7 +140,7 @@ blocks:
       - name: "Work Day Planning"
         timetome: "Plan"
         storyPoints: 5
-        price: 10
+        price: 100
         actions:
           - name: "Analyze Tasks"
             duration: 5min
@@ -153,7 +153,7 @@ blocks:
         timetome: "Work"
         important: true
         storyPoints: 5
-        price: 30
+        price: 100
         actions:
           - name: "Work Smart"
             duration: 200min
@@ -204,7 +204,7 @@ blocks:
       - name: "Afternoon Work"
         timetome: "Work"
         storyPoints: 5
-        price: 20
+        price: 100
         actions:
           - name: "Work Smarter"
             duration: 160min

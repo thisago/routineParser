@@ -17,4 +17,4 @@ requires "nim >= 1.6.4"
 requires "yaml"
 
 when isMainModule:
-   requires "cligen"
+  requires "cligen"

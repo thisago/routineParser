@@ -3,6 +3,7 @@
 :ROAM_ALIASES: routineParser
 :END:
 #+title: Routine Parser
+#+auto_tangle: t
 
 * Help
 :PROPERTIES:
@@ -59,6 +60,19 @@ where subcommand syntaxes are as follows:
   Options:
       -r=, --routineYaml=  string  REQUIRED  set routineYaml
       -t=, --today=        string  ""        set today
+
+  simpleRepresent [REQUIRED,optional-params]
+    Generates the routine representation in Markdown
+
+    The float hours described at `dayStart` overrides the configuration day
+    start
+
+    Description of the output: - `!` in front of the task tells it's important
+  Options:
+      -r=, --routineYaml=  string  REQUIRED  set routineYaml
+      -d=, --dayStart=     float   -1.0      set dayStart
+      -t=, --today=        string  ""        set today
+      --highlightAction    bool    false     set highlightAction
 #+end_example
 
 
@@ -66,6 +80,291 @@ where subcommand syntaxes are as follows:
 :PROPERTIES:
 :VISIBILITY: content
 :END:
+** Routine YAML
+#+begin_src yaml :tangle example.yaml
+version: 0.1.0 # Representational version, used at Gantt chart
+
+config:
+  dayStart: 06:00
+  dayEnd: 21:30 # exceed this hour means invalid routine
+  prerequisites:
+    maxStoryPoints: 30 # over-engineering test, can be omitted both here and on tasks
+    minBalance: 30 # final balance of the day, the earned money
+    minAverageHourPrice: 90 # the ideal price of your average billable hour
+    minBilled: 200 # total of hour prices of the day, including negative values
+    minBilledHours: 6 # total billable hours of the day
+    minSatisfaction: 10 # another test, can be omited
+  nonWorkDays: [Saturday, Sunday] # do not require billing and work enforcements these days
+  tolerance: # time margins between blocks, tasks and actions
+    betweenBlocks: 2min
+    betweenTasks: 2min
+    betweenActions: 1min
+
+blocks:
+  - name: "Getting Started"
+    tasks:
+      - name: "Exit Bedroom"
+        timetome: "Getting Started"
+        actions:
+          - name: "Wake the bed"
+            duration: 3min
+          - name: "Vest Clothes"
+            duration: 3min
+          - name: "Drink Water"
+            duration: 1min
+          - name: "Make the Bed"
+            duration: 3min
+          - name: "Meditate a little"
+            duration: 10min
+            repeat: [Saturday]
+      - name: "Breakfast"
+        timetome: "Getting Started"
+        important: false
+        satisfaction: 2
+        actions:
+          - name: "Make Coffee"
+            duration: 5min
+          - name: "Prepare Breakfast"
+            duration: 20min
+          - name: "Eat"
+            duration: 6min
+      - name: "Walk at morning"
+        timetome: "Exercises"
+        satisfaction: 3
+        repeat: [Sunday]
+        actions:
+          - name: "Put sneakers"
+            duration: 5min
+          - name: "Walk across the fields"
+            duration: 40min
+
+  - name: "Plan the Week"
+    repeat: [Weekends]
+    tasks:
+      - name: "Weekly Planning"
+        timetome: "Plan"
+        important: true
+        storyPoints: 1
+        satisfaction: 1
+        actions:
+          - name: "Past Week Reporting"
+            duration: 5min
+          - name: "Rate the Past Week"
+            duration: 5min
+          - name: "Review Plans and Tasks"
+            duration: 15min
+          - name: "Write the Plan"
+            duration: 10min
+
+  - name: "Plan Personal Day"
+    repeat: [Everyday]
+    tasks:
+      - name: "Personal Day Planning"
+        timetome: "Plan"
+        important: false
+        storyPoints: 1
+        actions:
+          - name: "Yesterday Backtrack"
+            duration: 5min
+          - name: "Review Plans and Tasks"
+            duration: 5min
+          - name: "Review the Routine"
+            duration: 5min
+          - name: "Review Past Plan"
+            duration: 5min
+          - name: "Plan the Day"
+            duration: 5min
+
+  - name: "Plan the Work Week"
+    repeat: [Weekends]
+    tasks:
+      - name: "Work Week Planning"
+        timetome: "Plan"
+        important: true
+        storyPoints: 1
+        price: 100
+        actions:
+          - name: "Past Work Week Reporting"
+            duration: 5min
+          - name: "Rate the Past Work Week"
+            duration: 5min
+          - name: "Review Plans and Tasks"
+            duration: 10min
+          - name: "Write the Plan"
+            duration: 5min
+
+  # exercise and health
+
+  - name: "Waking the body"
+    repeat: [Everyday]
+    tasks:
+      - name: "Morning Exercises"
+        timetome: "Exercises"
+        important: false
+        satisfaction: 5
+        actions:
+          - name: "Warm Up"
+            duration: 6min
+          - name: "Calisthenics"
+            duration: 20min
+
+      - name: "Morning Bath"
+        timetome: "Getting Started"
+        important: false
+        satisfaction: 5
+        actions:
+          - name: "Prepare to Take Bath"
+            duration: 2min
+          - name: "Cold Bath"
+            duration: 10min
+
+  - name: "Morning Work"
+    repeat: [Weekdays]
+    tasks:
+      - name: "Work Day Planning"
+        timetome: "Plan"
+        storyPoints: 5
+        price: 100
+        actions:
+          - name: "Analyze Tasks"
+            duration: 5min
+          - name: "Review Past Plan"
+            duration: 5min
+          - name: "Write the plan"
+            duration: 5min
+
+      - name: "Morning Work"
+        timetome: "Work"
+        important: true
+        storyPoints: 5
+        price: 100
+        actions:
+          - name: "Work Smart"
+            duration: 200min
+
+  - name: "Plan the Month"
+    repeat: [Monthstart]
+    tasks:
+      - name: "Monthly Planning"
+        timetome: "Plan"
+        important: true
+        storyPoints: 1
+        satisfaction: 3
+        actions:
+          - name: "Past Month Reporting"
+            duration: 10min
+          - name: "Rate the Past Month"
+            duration: 5min
+          - name: "Check Tasks"
+            duration: 10min
+          - name: "Write the Plan"
+            duration: 15min
+
+  - name: "Third Refection"
+    repeat: [Everyday]
+    tasks:
+      - name: "Light Lunch"
+        timetome: "Getting Started"
+        important: false
+        storyPoints: 3
+        satisfaction: 1
+        actions:
+          - name: "Prepare Food"
+            duration: 25min
+          - name: "Eat"
+            duration: 8min
+
+      - name: "Help Digestion"
+        timetome: "Exercises"
+        important: true
+        storyPoints: 3
+        actions:
+          - name: "Light Exercises"
+            duration: 15min
+
+  - name: "Afternoon Work"
+    repeat: [Weekdays]
+    tasks:
+      - name: "Afternoon Work"
+        timetome: "Work"
+        storyPoints: 5
+        price: 100
+        actions:
+          - name: "Work Smarter"
+            duration: 160min
+
+      - name: "Finish the Work Day"
+        timetome: "Writing"
+        actions:
+          - name: "Write Summary"
+            duration: 2min
+          - name: "Finish the Report"
+            duration: 5min
+
+  - name: "Stop the work"
+    tasks:
+      - name: "Last Refection"
+        timetome: "Getting Started"
+        satisfaction: 5
+        actions:
+          - name: "Prepare the Food"
+            duration: 15min
+          - name: "Eat"
+            duration: 8min
+
+      - name: "Last bath"
+        timetome: "Getting Started"
+        important: true
+        satisfaction: 2
+        actions:
+          - name: "Prepare to Take Bath"
+            duration: 2min
+          - name: "Take Bath"
+            duration: 10min
+
+  - name: "Learn"
+    repeat: [Weekends]
+    tasks:
+      - name: "Learning New Things"
+        timetome: "Study"
+        storyPoints: 2
+        actions:
+          - name: "Study New Information"
+            duration: 60min
+
+  - name: "Shutting down"
+    repeat: [Everyday]
+    tasks:
+      - name: "Finish the Day"
+        timetome: "Writing"
+        actions:
+          - name: "Finish the Personal Report"
+            duration: 10min
+
+      - name: "Review Routine"
+        timetome: "Plan"
+        actions:
+          - name: "Improve and review the routine"
+            duration: 15min
+
+      - name: "Patch timetome"
+        timetome: "Planned Tasks"
+        important: false
+        actions:
+          - name: "Patch it with Termux script"
+            duration: 3min
+
+unplannedTasks:
+  - name: "Brew Extra Coffee"
+    timetome: "Getting Started"
+    satisfaction: 3
+    duration: 10min
+  - name: "Quick Meditation"
+    timetome: "Meditation"
+    satisfaction: 2
+    duration: 6min
+#+end_src
+
 ** Summary
 #+begin_src bash :exports both :results pp
 echo -n "- "
@@ -74,29 +373,29 @@ routineParser summary -r example.yaml --today 2024-10-01 | sed 's/[\(\)]//g' | s
 
 #+RESULTS:
 #+begin_example
-- valid: false
-- rawNeededHours: 10.61666666666667
-- realNeededHours: 12.1
+- valid: true
+- rawNeededHours: 10.616666666666667
+- realNeededHours: 12.116666666666667
 - dayHours: 15.5
 - totalStoryPoints: 23
 - totalSatisfaction: 26
-- totalPositiveBilled: 155.8333333333333
-- totalNegativeBilled: -125.0
-- totalBilled: 280.8333333333333
-- totalBalance: 30.83333333333331
-- totalBilledHours: 6.666666666666666
+- totalPositiveBilled: 625.0
+- totalNegativeBilled: 0.0
+- totalBilled: 625.0
+- totalBalance: 625.0
+- totalBilledHours: 6.25
 - totalPositiveBilledHours: 6.25
-- totalNegativeBilledHours: 0.4166666666666667
-- minAverageHourPrice: 42.125
+- totalNegativeBilledHours: 0.0
+- minAverageHourPrice: 100.0
 #+end_example
 
-** Markdown
-#+begin_src bash :exports both :results pp
+** Markdown Representation
+#+begin_src bash :exports both :results pp :wrap src md
 routineParser represent -r example.yaml --today 2024-10-01
 #+end_src
 
 #+RESULTS:
-#+begin_example
+#+begin_src md
 ## Getting Started (06:00-06:52)
 ### Exit Bedroom - 0sp0sf0pr10min (06:00-06:10)
 - Wake the bed - 3min (06:00-06:03)
@@ -109,7 +408,7 @@ routineParser represent -r example.yaml --today 2024-10-01
 - Eat - 6min (06:43-06:49)
 
 ## Plan Personal Day (06:54-07:26)
-### Personal Day Planning - 1sp0sf-300pr25min (06:54-07:19)
+### Personal Day Planning - 1sp0sf0pr25min (06:54-07:19)
 - Yesterday Backtrack - 5min (06:54-06:59)
 - Review Plans and Tasks - 5min (07:00-07:05)
 - Review the Routine - 5min (07:06-07:11)
@@ -125,11 +424,11 @@ routineParser represent -r example.yaml --today 2024-10-01
 - Cold Bath - 10min (08:01-08:11)
 
 ## Morning Work (08:16-11:59)
-### Work Day Planning - 5sp0sf10pr15min (08:16-08:31)
+### Work Day Planning - 5sp0sf100pr15min (08:16-08:31)
 - Analyze Tasks - 5min (08:16-08:21)
 - Review Past Plan - 5min (08:22-08:27)
 - Write the plan - 5min (08:28-08:33)
-### !Morning Work - 5sp0sf30pr200min (08:36-11:56)
+### !Morning Work - 5sp0sf100pr200min (08:36-11:56)
 - Work Smart - 200min (08:36-11:56)
 
 ## Plan the Month (12:01-12:47)
@@ -147,7 +446,7 @@ routineParser represent -r example.yaml --today 2024-10-01
 - Light Exercises - 15min (13:26-13:41)
 
 ## Afternoon Work (13:46-16:40)
-### Afternoon Work - 5sp0sf20pr160min (13:46-16:26)
+### Afternoon Work - 5sp0sf100pr160min (13:46-16:26)
 - Work Smarter - 160min (13:46-16:26)
 ### Finish the Work Day - 0sp0sf0pr7min (16:29-16:36)
 - Write Summary - 2min (16:29-16:31)
@@ -168,7 +467,8 @@ routineParser represent -r example.yaml --today 2024-10-01
 - Improve and review the routine - 15min (17:40-17:55)
 ### Patch timetome - 0sp0sf0pr3min (17:58-18:01)
 - Patch it with Termux script - 3min (17:58-18:01)
-#+end_example
+#+end_src
+
 ** Represent Unplanned Tasks
 #+begin_src bash :exports both :results pp
 routineParser representUnplanned -r example.yaml --today 2024-10-01
@@ -177,16 +477,15 @@ routineParser representUnplanned -r example.yaml --today 2024-10-01
 #+RESULTS:
 : - Brew Extra Coffee - 0sp3sf0pr10min
 : - Quick Meditation - 0sp2sf0pr6min
-** Gantt Chart
-#+begin_src bash :exports both :results raw
-echo "#+begin_src mermaid :file example.svg"
+
+** Gantt Chart Representation
+#+begin_src bash :exports both :results pp :wrap src mermaid
 echo "%%{init: { 'theme': 'dark' } }%%"
 routineParser ganttChart -r example.yaml --today 2024-10-01
-echo "#+end_src"
 #+end_src
 
 #+RESULTS:
-#+begin_src mermaid :file example.svg
+#+begin_src mermaid
 %%{init: { 'theme': 'dark' } }%%
 gantt
   title Routine for 2024-10-01 (0.1.0)
@@ -200,15 +499,15 @@ gantt
   06.16-06.47 Breakfast - 0sp2sf0pr31min : 06:16, 31m
 
   section Plan Personal Day
-  06.54-07.19 Personal Day Planning - 1sp0sf-300pr25min : 06:54, 25m
+  06.54-07.19 Personal Day Planning - 1sp0sf0pr25min : 06:54, 25m
 
   section Waking the body
   07.28-07.54 Morning Exercises - 0sp5sf0pr26min : 07:28, 26m
   07.58-08.10 Morning Bath - 0sp5sf0pr12min : 07:58, 12m
 
   section Morning Work
-  08.16-08.31 Work Day Planning - 5sp0sf10pr15min : 08:16, 15m
-  08.36-11.56 !Morning Work - 5sp0sf30pr200min : 08:36, 200m
+  08.16-08.31 Work Day Planning - 5sp0sf100pr15min : 08:16, 15m
+  08.36-11.56 !Morning Work - 5sp0sf100pr200min : 08:36, 200m
 
   section Plan the Month
   12.01-12.41 !Monthly Planning - 1sp3sf0pr40min : 12:01, 40m
@@ -218,7 +517,7 @@ gantt
   13.26-13.41 !Help Digestion - 3sp0sf0pr15min : 13:26, 15m
 
   section Afternoon Work
-  13.46-16.26 Afternoon Work - 5sp0sf20pr160min : 13:46, 160m
+  13.46-16.26 Afternoon Work - 5sp0sf100pr160min : 13:46, 160m
   16.29-16.36 Finish the Work Day - 0sp0sf0pr7min : 16:29, 7m
 
   section Stop the work
@@ -243,6 +542,9 @@ gantt
   - *Do not duplicate logic at each command*
 
 * COMMENT Idealization :noexport:
+:PROPERTIES:
+:VISIBILITY: folded
+:END:
 ** Static block hours
 Instead of just calculating the time by summing things together, support static definitions and stretch things around them.
 
